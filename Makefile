@@ -14,7 +14,7 @@ clean:
 	rm -f *.o *.a $(BIN) nucondb-client.tgz 
 
 distrib: $(SRC) $(LIB) $(HDR)
-	tar czvf nucondb-client.tgz $(SRC) $(LIB) $(HDR)
+	tar czvf Makefile nucondb-client.tgz $(SRC) $(LIB) $(HDR)
 
 $(LIB): $(OBJ)
 	rm -f $(LIB)
