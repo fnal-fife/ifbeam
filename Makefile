@@ -1,6 +1,7 @@
 LIB=libnucondb.a 
 OBJ=nucondb.o WebAPI.o
 SRC=nucondb.cc WebAPI.cc demo.cc
+HDR=nucondb.h WebAPI.h
 DEFS=
 TESTDEFS=-DUNITTEST
 CFLAGS=-g $(DEFS) 
@@ -10,10 +11,10 @@ BIN= demo nucondb-test WebAPI-test
 all: $(BIN) $(LIB)
 
 clean:
-	rm -f *.o *.a $(BIN)
+	rm -f *.o *.a $(BIN) nucondb-client.tgz 
 
-distrib: $(SRC) $(LIB)
-	tar czvf nucondb-client.tgz $(SRC) $(LIB)
+distrib: $(SRC) $(LIB) $(HDR)
+	tar czvf nucondb-client.tgz $(SRC) $(LIB) $(HDR)
 
 $(LIB): $(OBJ)
 	rm -f $(LIB)
