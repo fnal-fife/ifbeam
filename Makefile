@@ -13,8 +13,8 @@ all: $(BIN) $(LIB)
 clean:
 	rm -f *.o *.a $(BIN) nucondb-client.tgz 
 
-distrib: $(SRC) $(LIB) $(HDR)
-	tar czvf Makefile nucondb-client.tgz $(SRC) $(LIB) $(HDR)
+distrib: $(SRC) $(HDR)
+	tar czvf nucondb-client.tgz Makefile $(SRC) $(HDR)
 
 $(LIB): $(OBJ)
 	rm -f $(LIB)
