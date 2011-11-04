@@ -1,6 +1,6 @@
 LIB=libnucondb.a 
-OBJ=nucondb.o WebAPI.o
-SRC=nucondb.cc WebAPI.cc demo.cc
+OBJ=nucondb.o WebAPI.o utils.o
+SRC=nucondb.cc WebAPI.cc demo.cc utils.cc
 HDR=nucondb.h WebAPI.h
 DEFS=
 TESTDEFS=-DUNITTEST
