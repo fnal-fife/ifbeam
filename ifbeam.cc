@@ -60,6 +60,7 @@ BeamFolder::FillCache(double for_time) {
     }
 
     _values.clear();
+    _n_values.clear();
 
     for( i = 0, it = _variable_names.begin(); it != _variable_names.end(); it++,i++ ) {
         std::stringstream varurl;
@@ -71,9 +72,11 @@ BeamFolder::FillCache(double for_time) {
         WebAPI s(varurl.str());
         getline(s.data(), st);
         j = 0;
+        _n_values[i] = 0;
         while( !s.data().eof() ) {
             getline(s.data(), st);
             _values[i][j] = st;
+            _n_values[i]++;
             j++;
         }
     }
@@ -91,13 +94,16 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
    size_t bpos;
    va_list al;
    int slot;
+   int found;
    
    va_start(al, variable_list);
 
    variables = split(variable_list);
     
    for( rvit = variables.begin(); rvit != variables.end(); rvit++) {
-       // find varname to lookup -- if 
+       // find varname to lookup :
+       // if we have a [n] on the end, set slot to n, and 
+       // make it var[]
        bpos = rvit->find('[');
        if (bpos != string::npos) {
            slot = atoi(rvit->c_str()+bpos+1);
@@ -107,12 +113,35 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
            curvar *rvit;
            slot = 0;
        }
-       curdest = va_next(al,void*);
 
+       // the place to put the value is the next varargs parameter
+       curdest = va_next(al,void*);
+     
+       found = 0;
        for ( i = 0, it = _variable_names.begin(); it != _variable_names.end(); it++,i++ ) {
            if ( curvar == *it ) {
-                // still need to lookup nearest time in _values[i]...
-                // and pick slot-th value.
+               found = 1;
+               // assume even distribution, guess a row proportionally
+               // through the list, and linear search from there.
+	       guess_row = _n_values[i] * (from_time - _cache_start) / (_cache_end - _cache_start);
+               while( guess_row > 0 && get_time(_values[i][guess_row]) > from_time ) {
+                   guess_row--;
+               }
+               while( guess_row < _n_values[i] && get_time(_values[i][guess_row]) < from_time ) {
+                   guess_row++;
+               }
+               // we should be at the smallest row above from_time
+               // if our time is closer to the one below us, go down
+               // one.
+               if (guess_row > 0 && 
+                     (get_time(_values[i][guess_row])-from_time) > 
+ 		       (from_time - get_time(_values[i][guess_row-1]))) {
+		   guess_row--;
+	       }
+	       *curdest = get_value(_values[i][guess_row], slot);
+           }
+           if (!found) {
+               throw(WebAPIException(curvar, "-- variable not found"));
            }
        }
    }

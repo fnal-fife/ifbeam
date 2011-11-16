@@ -16,6 +16,7 @@ private:
     double _cache_end;
     // vector (in _variable_names order) of vectors of csv data lines 
     std::vector< std::vector< std::string > > _values;
+    std::vector< int > _n_values;
 
     void FetchBundleInfo();
     void FillCache(double time);
