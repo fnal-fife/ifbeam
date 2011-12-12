@@ -1,7 +1,7 @@
 LIB=libnucondb.a 
-OBJ=nucondb.o WebAPI.o utils.o
-SRC=nucondb.cc WebAPI.cc demo.cc utils.cc
-HDR=nucondb.h WebAPI.h
+OBJ=nucondb.o WebAPI.o utils.o ifbeam.o
+SRC=nucondb.cc WebAPI.cc demo.cc utils.cc ifbeam.cc
+HDR=nucondb.h WebAPI.h ifbeam.h
 DEFS=
 TESTDEFS=-DUNITTEST
 CFLAGS=-g $(DEFS) 
@@ -19,6 +19,9 @@ distrib: $(SRC) $(HDR)
 $(LIB): $(OBJ)
 	rm -f $(LIB)
 	ar qv $(LIB) $(OBJ)
+
+ifbeam-test: ifbeam.cc $(LIB)
+	g++ -o $@ $(TESTDEFS) $(CFLAGS) ifbeam.cc $(LIB)
 
 nucondb-test: nucondb.cc $(LIB)
 	g++ -o $@ $(TESTDEFS) $(CFLAGS) nucondb.cc $(LIB)
