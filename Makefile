@@ -6,7 +6,7 @@ DEFS=
 TESTDEFS=-DUNITTEST
 CFLAGS=-g $(DEFS) 
 CXXFLAGS=-g $(DEFS) 
-BIN= demo nucondb-test WebAPI-test
+BIN= demo nucondb-test WebAPI-test ifbeam-test
 
 all: $(BIN) $(LIB)
 

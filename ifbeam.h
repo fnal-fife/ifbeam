@@ -21,6 +21,8 @@ private:
     void FillCache(double time);
 
 public:
+    static int _debug;
+
     // constructor
     BeamFolder(std::string bundle_name, std::string url, double time_width);
 
