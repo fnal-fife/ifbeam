@@ -16,36 +16,7 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _url = url;
     _cache_start = 0.0;
     _cache_end = 0.0;
-    FetchBundleInfo();
-}
-
-void
-BeamFolder::FetchBundleInfo() {
-   std::string st;
-   std::stringstream fullurl;
-
-   // scrape event name and 
-
-   fullurl << _url << "/GUI/edit_bundle?b=" << _bundle_name;
-   _variable_names.clear();
-
-   WebAPI s(fullurl.str());
-   while(!s.data().eof()) {
-       (void)getline(s.data(), st);
-       if (string:npos != st.find("name=bundle") && string:npos == st.find(_bundle_name)) {
-            throw WebAPIException("Got wrong page looking up bundle",st);
-       }
-       if (string:npos != st.find("name=\"event\"")) {
-           pos = st.find("value=\"");
-           pos2 = st.find("\"", pos + 8);
-           _event = st.substr(pos+8,pos2);
-       }
-       if (string:npos != (pos = st.find("name=\"del_var:"))) {
-           pos2 = st.find("\"", pos+15);
-           _variable_names.push_back(st.substr(pos+15, pos2));
-       }
-    }
-    s.data().close()
+    _cache_slot = -1;
 }
 
 void
@@ -61,24 +32,23 @@ BeamFolder::FillCache(double for_time) {
 
     _values.clear();
     _n_values.clear();
+    _cache_slot = -1;
 
-    for( i = 0, it = _variable_names.begin(); it != _variable_names.end(); it++,i++ ) {
-        std::stringstream varurl;
-        varurl << _url << "/Data/data" 
-               << "?v=" << *it 
-               << "&e=" << _event 
-               << "&t0=" << time_string(for_time)
-               << "&t1=" << time_string(for_time + _time_width);
-        WebAPI s(varurl.str());
-        getline(s.data(), st);
-        j = 0;
-        _n_values[i] = 0;
-        while( !s.data().eof() ) {
-            getline(s.data(), st);
-            _values[i][j] = st;
-            _n_values[i]++;
-            j++;
-        }
+    std::stringstream varurl;
+    varurl << _url << "/Data/data" 
+           << "?v=" << *it 
+           << "&e=" << _event 
+           << "&t0=" << time_string(for_time)
+           << "&t1=" << time_string(for_time + _time_width);
+    WebAPI s(varurl.str());
+    getline(s.data(), st);
+    j = 0;
+    _n_values[i] = 0;
+    while( !s.data().eof() ) {
+	getline(s.data(), st);
+	_values[i] = st;
+	_n_values++;
+	j++;
     }
     _cache_start = for_time;
     _cache_start = for_time + _time_width;
@@ -86,63 +56,69 @@ BeamFolder::FillCache(double for_time) {
 
 void
 BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
-   std::vector<std::string> variables, values;
-   std::vector<std::string>::iterator rvit, it;
-   std::string curvar;
-   FillCache(from_time);
-   double *curdest;
-   size_t bpos;
-   va_list al;
-   int slot;
-   int found;
+    std::vector<std::string> variables, values;
+    std::vector<std::string>::iterator rvit, it;
+    std::string curvar;
+    FillCache(from_time);
+    double *curdest;
+    size_t bpos;
+    va_list al;
+    int first_time_slot;
+    int array_slot;
+    int search_slot;
+    int found;
+    double first_time;
+    std:string *vallist
+
+    // find first slot with this time; may have it cached...
+    if (_cache_slot >= 0 && get_time(_values[_cache_slot]) == from_time ) {
+         first_time_slot = _cache_slot;
+    } else {
+	// start proportionally through the data and search for the time we want
+	first_time_slot = _n_values * (from_time - _cache_start) / (_cache_end - _cache_start);
+	while( first_time_slot < _n_values && get_time(_values[first_time_slot]) < from_time ) {
+	   first_time_slot++;
+	}
+	while( first_time_slot > 0 && get_time(_values[first_time_slot]) > from_time ) {
+	   first_time_slot--;
+	}
+   }
+   _cache_slot = first_time_slot;
+   first_time = get_time(values[first_time_slot])
    
    va_start(al, variable_list);
 
    variables = split(variable_list);
     
    for( rvit = variables.begin(); rvit != variables.end(); rvit++) {
+       search_slot = first_time_slot;
        // find varname to lookup :
        // if we have a [n] on the end, set slot to n, and 
        // make it var[]
+       //  
+       //
+       found = 0
        bpos = rvit->find('[');
        if (bpos != string::npos) {
-           slot = atoi(rvit->c_str()+bpos+1);
+           array_slot = atoi(rvit->c_str()+bpos+1);
            curvar = *rvit;
            curvar[bpos+1] = ']';
        } else {
            curvar *rvit;
-           slot = 0;
+           array_slot = 0;
        }
-
+    
        // the place to put the value is the next varargs parameter
        curdest = va_next(al,void*);
      
-       found = 0;
-       for ( i = 0, it = _variable_names.begin(); it != _variable_names.end(); it++,i++ ) {
-           if ( curvar == *it ) {
-               found = 1;
-               // assume even distribution, guess a row proportionally
-               // through the list, and linear search from there.
-	       guess_row = _n_values[i] * (from_time - _cache_start) / (_cache_end - _cache_start);
-               while( guess_row > 0 && get_time(_values[i][guess_row]) > from_time ) {
-                   guess_row--;
-               }
-               while( guess_row < _n_values[i] && get_time(_values[i][guess_row]) < from_time ) {
-                   guess_row++;
-               }
-               // we should be at the smallest row above from_time
-               // if our time is closer to the one below us, go down
-               // one.
-               if (guess_row > 0 && 
-                     (get_time(_values[i][guess_row])-from_time) > 
- 		       (from_time - get_time(_values[i][guess_row-1]))) {
-		   guess_row--;
-	       }
-	       *curdest = get_value(_values[i][guess_row], slot);
-           }
-           if (!found) {
-               throw(WebAPIException(curvar, "-- variable not found"));
-           }
+
+      for( rvit= get_time(_values[search_slot]) == first_time && _values[search_slot].name < curvar; rvit++) 
+          ;
+       if ( curvar == getname(values[search_slot])) {
+          vallist = split(',', values[search_slot]);
+          *curdest = atofd(vallist[slot+2);
+       } else {
+           throw(WebAPIException(curvar, "-- variable not found"));
        }
    }
 }
