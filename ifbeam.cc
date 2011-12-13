@@ -153,6 +153,7 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
             array_slot = atoi(rvit->c_str()+bpos+1);
             curvar = *rvit;
             curvar[bpos+1] = ']';
+            curvar = curvar.substr(0,bpos+2);
         } else {
             curvar =  *rvit;
             array_slot = 0;
@@ -187,12 +188,23 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
 #ifdef UNITTEST
 main() {
     double from_time = 1323722817.0;
-    double ehmgpr;
+    double ehmgpr, em121ds0, em121ds1;
     WebAPI::_debug = 1;
+  try {
     BeamFolder::_debug = 1;
-    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",30);
+    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",60);
     bf.GetNamedData(from_time,"E:HMGPR",&ehmgpr);
+    bf.GetNamedData(from_time,"E:M121DS[0],E:M121DS[1]",&em121ds0, &em121ds1);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
+    std::cout << "got values " << em121ds0 << ',' << em121ds1 << "for E:M121DS[1,2]\n";
+    bf.GetNamedData(from_time+30,"E:HMGPR",&ehmgpr);
+    bf.GetNamedData(from_time+30,"E:M121DS[0],E:M121DS[1]",&em121ds0, &em121ds1);
+    std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
+    std::cout << "got values " << em121ds0 << ',' << em121ds1 << "for E:M121DS[1,2]\n";
+  } catch (WebAPIException we) {
+       std::cout << "got exception:" << &we << "\n";
+  }
+
 }
 #endif
 
