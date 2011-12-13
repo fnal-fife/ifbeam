@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include "WebAPI.h"
 
 class BeamFolder {
 private:
@@ -21,7 +22,7 @@ private:
     std::vector<std::string> _values;
     int _n_values;
 
-    void FillCache(double time);
+    void FillCache(double time) throw(WebAPIException);
 
 public:
     static int _debug;
@@ -30,5 +31,5 @@ public:
     BeamFolder(std::string bundle_name, std::string url, double time_width);
 
     // accessor
-    void GetNamedData(double from_time, std::string variable_list, ... );
+    void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
 };

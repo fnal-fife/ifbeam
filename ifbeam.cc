@@ -23,7 +23,7 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
 }
 
 void
-BeamFolder::FillCache(double for_time) {
+BeamFolder::FillCache(double for_time) throw(WebAPIException) {
     std::vector<std::string>::iterator it;
     int i,j;
     std::string st;
@@ -98,7 +98,7 @@ get_value(std::string s, int n) {
 }
 
 void
-BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
+BeamFolder::GetNamedData(double from_time, std::string variable_list, ...)  throw(WebAPIException) {
     std::vector<std::string> variables, values;
     std::vector<std::string>::iterator rvit, it;
     std::string curvar;
