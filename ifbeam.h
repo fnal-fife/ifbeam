@@ -13,7 +13,10 @@ private:
     double _cache_start;
     double _cache_end;
 
+    // cached search slot
     int _cache_slot;
+    double _cache_slot_time;
+
     // vector (in _variable_names order) of vectors of csv data lines 
     std::vector<std::string> _values;
     int _n_values;

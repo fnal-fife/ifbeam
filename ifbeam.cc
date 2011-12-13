@@ -35,6 +35,8 @@ BeamFolder::FillCache(double for_time) {
 
     // cache is flushed...
     _values.clear();
+    // we average 15 lines/second so preallocate some space
+    _values.reserve(_time_width*15);
     _n_values = 0;
     _cache_slot = -1;
 
@@ -67,7 +69,10 @@ BeamFolder::FillCache(double for_time) {
 
 double
 get_time(std::string s) {
-    return atof(s.c_str());
+    std::string fstring(s.substr(0,s.find(',')-3));
+    fstring.append(1,'.');
+    fstring.append(s.substr(s.find(',')-3, 3));
+    return atof(fstring.c_str());
 }
 
 std::string 
@@ -111,13 +116,21 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
     FillCache(from_time);
 
     // find first slot with this time; may have it cached...
-    if (_cache_slot >= 0 && get_time(_values[_cache_slot]) == from_time ) {
-         _debug && std::cout << "finding cached slot: " << _cache_slot << "\n";
-         first_time_slot = _cache_slot;
+
+    if (_cache_slot >= 0 && _cache_slot_time == from_time ) {
+
+        _debug && std::cout << "finding cached slot: " << _cache_slot << "\n";
+        first_time_slot = _cache_slot;
+        first_time = get_time(_values[first_time_slot]);
+
     } else {
-	// start proportionally through the data and search for the time we want
+
+	// start proportionally through the data and search for the time boundary
+	// nearest the time we are looking for
+
 	first_time_slot = _n_values * (from_time - _cache_start) / (_cache_end - _cache_start);
          _debug && std::cout << "starting search at: " << first_time_slot << "data: " << _values[first_time_slot] <<"\n";
+
 	while( first_time_slot < _n_values && get_time(_values[first_time_slot]) < from_time ) {
 	   first_time_slot++;
 	}
@@ -126,15 +139,27 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
 	   first_time_slot--;
 	}
         _debug && std::cout << "after scan backward: " << first_time_slot << "data: " << _values[first_time_slot] <<"\n";
+
+        // pick the closer time
+        if (first_time_slot < _n_values && abs(get_time(_values[first_time_slot]) - from_time) > abs(get_time(_values[first_time_slot+1]) - from_time)  ){
+            _debug && std::cout << "switching from  reference time:" << get_time(_values[first_time_slot]) << "\n";
+            first_time_slot = first_time_slot+1;
+        }
         first_time = get_time(_values[first_time_slot]);
+
+        _debug && std::cout << "picked reference time:" << first_time << "\n";
+       
+        // find the start of the picked time
 	while( first_time_slot > 1 && get_time(_values[first_time_slot-1]) == first_time ) {
 	   first_time_slot--;
 	}
-        _debug && std::cout << "after scan equals: " << first_time_slot << "data: " << _values[first_time_slot] <<"\n";
+
+        // chache this result
         _cache_slot = first_time_slot;
+        _cache_slot_time = from_time;
     }
 
-    _debug && std::cout << "after scan, first_time_slot is : " << first_time_slot << "data: " << _values[first_time_slot] <<"\n";
+    _debug && std::cout << "after scans, first_time_slot is : " << first_time_slot << "data: " << _values[first_time_slot] <<"\n";
    
     va_start(al, variable_list);
 
@@ -142,11 +167,11 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
     
     for( rvit = variables.begin(); rvit != variables.end(); rvit++) {
         search_slot = first_time_slot;
+
         // find varname to lookup :
         // if we have a [n] on the end, set slot to n, and 
         // make it var[]
         //  
-        //
         found = 0;
         bpos = rvit->find('[');
         if (bpos != std::string::npos) {
@@ -158,21 +183,21 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
             curvar =  *rvit;
             array_slot = 0;
         }
-        _debug && std::cout << "searching for var: " << curvar << "\n";
+
      
         // the place to put the value is the next varargs parameter
         curdest = (double *) va_arg(al,void*);
-      
  
-       // scan for named variable with this time
-       _debug && std::cout << "checking slot: " << search_slot << " name: " << get_name(_values[search_slot]) << " value: " << _values[search_slot] <<"\n";
-
-       while( search_slot < _n_values && get_time(_values[search_slot]) == first_time && get_name(_values[search_slot]) < curvar)  {
-           search_slot++;
+        // scan for named variable with this time
+        _debug && std::cout << "searching for var: " << curvar << "\n";
+        _debug && std::cout << "checking slot: " << search_slot << " name: " << get_name(_values[search_slot]) << " value: " << _values[search_slot] <<"\n";
+ 
+        while( search_slot < _n_values && get_time(_values[search_slot]) == first_time && get_name(_values[search_slot]) < curvar)  {
+            search_slot++;
             _debug && std::cout << "checking slot: " << search_slot << " name: " << get_name(_values[search_slot]) << " value: " << _values[search_slot] <<"\n";
-        }
+         }
 
-       _debug && std::cout << "after namesearch, search_slot is : " << search_slot << "data: " << _values[search_slot] <<"\n";
+        _debug && std::cout << "after namesearch, search_slot is : " << search_slot << "data: " << _values[search_slot] <<"\n";
 
         if ( curvar == get_name(_values[search_slot])) {
            std::vector <std::string> vallist;
@@ -187,20 +212,27 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
 
 #ifdef UNITTEST
 main() {
-    double from_time = 1323602817.0;
-    double ehmgpr, em121ds0, em121ds1;
+    double from_time = 1323722720.0;
+    double ehmgpr, em121ds0, em121ds5;
     WebAPI::_debug = 1;
-  try {
     BeamFolder::_debug = 1;
+    std::string teststr("1321032116708,E:HMGPR,TORR,687.125");
+
+    std::cout << std::setiosflags(std::ios::fixed);
+    std::cout << "get_time(" << teststr << ") is : " << get_time(teststr);
+ 
+  try {
     BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",3600);
     bf.GetNamedData(from_time,"E:HMGPR",&ehmgpr);
-    bf.GetNamedData(from_time,"E:M121DS[0],E:M121DS[1]",&em121ds0, &em121ds1);
+    bf.GetNamedData(from_time,"E:M121DS[0],E:M121DS[5]",&em121ds0, &em121ds5);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
-    std::cout << "got values " << em121ds0 << ',' << em121ds1 << "for E:M121DS[1,2]\n";
-    bf.GetNamedData(1323726316528.0,"E:HMGPR",&ehmgpr);
-    bf.GetNamedData(1323726318594.0,"E:HMGPR",&ehmgpr);
+    std::cout << "got values " << em121ds0 << ',' << em121ds5 << "for E:M121DS[0,5]\n";
+ 
+    bf.GetNamedData(1323726316.528,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
-    bf.GetNamedData(1323726318594.0,"E:HMGPR",&ehmgpr);
+    bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);
+    std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
+    bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
   } catch (WebAPIException we) {
        std::cout << "got exception:" << &we << "\n";
