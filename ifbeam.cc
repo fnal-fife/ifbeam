@@ -167,7 +167,7 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
        // scan for named variable with this time
        _debug && std::cout << "checking slot: " << search_slot << " name: " << get_name(_values[search_slot]) << " value: " << _values[search_slot] <<"\n";
 
-       while( get_time(_values[search_slot]) == first_time && get_name(_values[search_slot]) < curvar)  {
+       while( search_slot < _n_values && get_time(_values[search_slot]) == first_time && get_name(_values[search_slot]) < curvar)  {
            search_slot++;
             _debug && std::cout << "checking slot: " << search_slot << " name: " << get_name(_values[search_slot]) << " value: " << _values[search_slot] <<"\n";
         }
@@ -187,24 +187,24 @@ BeamFolder::GetNamedData(double from_time, std::string variable_list, ...) {
 
 #ifdef UNITTEST
 main() {
-    double from_time = 1323722817.0;
+    double from_time = 1323602817.0;
     double ehmgpr, em121ds0, em121ds1;
     WebAPI::_debug = 1;
   try {
     BeamFolder::_debug = 1;
-    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",60);
+    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",3600);
     bf.GetNamedData(from_time,"E:HMGPR",&ehmgpr);
     bf.GetNamedData(from_time,"E:M121DS[0],E:M121DS[1]",&em121ds0, &em121ds1);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
     std::cout << "got values " << em121ds0 << ',' << em121ds1 << "for E:M121DS[1,2]\n";
-    bf.GetNamedData(from_time+30,"E:HMGPR",&ehmgpr);
-    bf.GetNamedData(from_time+30,"E:M121DS[0],E:M121DS[1]",&em121ds0, &em121ds1);
+    bf.GetNamedData(1323726316528.0,"E:HMGPR",&ehmgpr);
+    bf.GetNamedData(1323726318594.0,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
-    std::cout << "got values " << em121ds0 << ',' << em121ds1 << "for E:M121DS[1,2]\n";
+    bf.GetNamedData(1323726318594.0,"E:HMGPR",&ehmgpr);
+    std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
   } catch (WebAPIException we) {
        std::cout << "got exception:" << &we << "\n";
   }
 
 }
 #endif
-
