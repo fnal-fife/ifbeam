@@ -23,6 +23,10 @@ private:
     int _n_values;
 
     void FillCache(double time) throw(WebAPIException);
+    double slot_time(int n);
+    std::string slot_var(int n);
+    double slot_value(int n, int j);
+   
 
 public:
     static int _debug;
@@ -32,4 +36,8 @@ public:
 
     // accessor
     void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
+
+    double getCacheStartTime(){ return _cache_start; };
+    double getCacheEndTime(){ return _cache_end; };
+
 };
