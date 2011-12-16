@@ -1,7 +1,7 @@
 LIB=libnucondb.a 
 OBJ=nucondb.o WebAPI.o utils.o ifbeam.o
 SRC=nucondb.cc WebAPI.cc demo.cc utils.cc ifbeam.cc
-HDR=nucondb.h WebAPI.h ifbeam.h
+HDR=nucondb.h WebAPI.h ifbeam.h utils.h
 DEFS=
 TESTDEFS=-DUNITTEST
 CFLAGS=-g $(DEFS) 
