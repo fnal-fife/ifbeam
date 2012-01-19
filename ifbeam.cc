@@ -92,30 +92,16 @@ BeamFolder::slot_value(int n, int j) {
          p1 = p2;
          p2 = s.find(',',p1+1); 
      }
+     if (p1 == std::string::npos) {
+          throw(WebAPIException("not that many values in vector",""));
+     }
      return atof(s.substr(p1+1,p2-p1).c_str());
 }
 
 int time_eq(double x, double y) { return abs(x -  y) < .0001; }
 
 void
-BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(WebAPIException) {
-    std::vector<std::string> variables, values;
-    std::vector<std::string>::iterator rvit, it;
-    std::string curvar;
-    double *curdest;
-    size_t bpos;
-    va_list al;
-    int first_time_slot;
-    int array_slot;
-    int search_slot;
-    int found;
-    double first_time;
-
-    _debug && std::cout << "looking for time" <<  when << "\n";
-    // fetch data into cache (if needed)
-    FillCache(when);
-
-    // find first slot with this time; may have it cached...
+BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 
     if (_cache_slot >= 0 && time_eq(_cache_slot_time,when) ) {
 
@@ -162,37 +148,11 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
         _cache_slot = first_time_slot;
         _cache_slot_time = when;
     }
+}
 
-    _debug && std::cout << "after scans, first_time_slot is : " 
-                        << first_time_slot << "data: " 
-                        << _values[first_time_slot] <<"\n";
-   
-    va_start(al, variable_list);
-
-    variables = split(variable_list,',');
-    
-    for( rvit = variables.begin(); rvit != variables.end(); rvit++) {
+void
+BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot, std::string curvar) {
         search_slot = first_time_slot;
-
-        // find varname to lookup :
-        // if we have a [n] on the end, set slot to n, and 
-        // make it var[]
-        //  
-        found = 0;
-        bpos = rvit->find('[');
-        if (bpos != std::string::npos) {
-            array_slot = atoi(rvit->c_str()+bpos+1);
-            curvar = *rvit;
-            curvar[bpos+1] = ']';
-            curvar = curvar.substr(0,bpos+2);
-        } else {
-            curvar =  *rvit;
-            array_slot = 0;
-        }
-
-     
-        // the place to put the value is the next varargs parameter
-        curdest = (double *) va_arg(al,void*);
  
         // scan for named variable with this time
         _debug && std::cout << "searching for var: " << curvar << "\n";
@@ -221,6 +181,65 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
 
         _debug && std::cout << "after namesearch, search_slot is : " << search_slot 
 			<< "data: " << _values[search_slot] <<"\n";
+}
+void
+BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(WebAPIException) {
+    std::vector<std::string> variables, values;
+    std::vector<std::string>::iterator rvit, it;
+    std::string curvar;
+    double *curdest;
+    size_t bpos;
+    va_list al;
+    int first_time_slot;
+    int array_slot;
+    int search_slot;
+    int found;
+    double first_time;
+
+    _debug && std::cout << "looking for time" <<  when << "\n";
+    // fetch data into cache (if needed)
+    FillCache(when);
+
+    // find first slot with this time; may have it cached...
+
+
+    find_first(first_time_slot, first_time, when);
+
+    _debug && std::cout << "after scans, first_time_slot is : " 
+                        << first_time_slot << "data: " 
+                        << _values[first_time_slot] <<"\n";
+   
+    va_start(al, variable_list);
+
+    variables = split(variable_list,',');
+    
+    for( rvit = variables.begin(); rvit != variables.end(); rvit++) {
+
+
+        // find varname to lookup :
+        // if we have a [n] on the end, set slot to n, and 
+        // make it var[]
+        //  
+        found = 0;
+        bpos = rvit->find('[');
+        if (bpos != std::string::npos) {
+            array_slot = atoi(rvit->c_str()+bpos+1);
+            curvar = *rvit;
+            curvar[bpos+1] = ']';
+            curvar = curvar.substr(0,bpos+2);
+        } else {
+            curvar =  *rvit;
+            array_slot = 0;
+        }
+
+     
+        // the place to put the value is the next varargs parameter
+        curdest = (double *) va_arg(al,void*);
+
+
+
+        find_name(first_time_slot, first_time, search_slot, curvar);
+
 
         if ( curvar == slot_var(search_slot)) {
            std::vector <std::string> vallist;
@@ -232,6 +251,70 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
     }
 }
 
+std::vector<double> 
+BeamFolder::GetNamedVector(double when, std::string variable_name) {
+    double first_time;
+    int first_time_slot;
+    int search_slot;
+    double value;
+    int i;
+    std::vector<double> res;
+   
+    find_first(first_time_slot, first_time, when);
+    find_name(first_time_slot, first_time, search_slot, variable_name);
+
+    if ( variable_name != slot_var(search_slot)) {
+        throw(WebAPIException(variable_name, "-- variable not found"));
+    }
+
+    //  keep looking for a value until we get an exception
+    //  
+    for (i = 0; i < 10000; i++ ) {
+       try {
+           value = slot_value(search_slot, i);   
+           res.push_back(value);
+       } catch (WebAPIException e) {
+           break;
+       }
+   }
+   return res;
+}
+ 
+
+std::vector<double> 
+BeamFolder::GetTimeList() {
+   std::vector<double> res;
+   std::string lookfor;
+
+   // happily assume first variable in first sample appears
+   // in each sample, so find all the times for which  it appears
+   lookfor = slot_var(0);
+   for(int i = 0; i < _n_values; i++) {
+       if (lookfor == slot_var(i)) {
+           res.push_back(slot_time(i));
+       }
+   }
+   return res;
+}
+
+// hmm...
+
+std::vector<std::string> 
+BeamFolder::GetDeviceList() {
+   std::vector<std::string> res;
+   std::string lookfor;
+   // happily assume the second time you see the first variable,
+   // you've seen everybody once.
+   lookfor = slot_var(0);
+   res.push_back(lookfor);
+   for(int  i = 1; i < _n_values; i++) {
+        if (lookfor == slot_var(i)) {
+            break;
+        }
+        res.push_back(slot_var(i));
+   }
+   return res;
+}
 
 
 #ifdef UNITTEST
@@ -245,12 +328,34 @@ main() {
     std::cout << std::setiosflags(std::ios::fixed);
  
   try {
-    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",3600);
+    // BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",3600);
+    BeamFolder bf("NuMI_Physics", "http://dbweb3.fnal.gov:8080/ifbeam",3600);
     bf.GetNamedData(when,"E:HMGPR",&ehmgpr);
     bf.GetNamedData(when,"E:M121DS[0],E:M121DS[5]",&em121ds0, &em121ds5);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
     std::cout << "got values " << em121ds0 << ',' << em121ds5 << "for E:M121DS[0,5]\n";
  
+    std::cout << "time stamps:";
+    std::vector<double> times = bf.GetTimeList();
+    for (int i = 0; i < times.size(); i++) {
+        std::cout << times[i] << ", ";
+    }
+    std::cout << "\n";
+
+    std::cout << "variables:";
+    std::vector<std::string> vars = bf.GetDeviceList();
+    for (int i = 0; i < vars.size(); i++) {
+        std::cout << vars[i] << ", ";
+    }
+    std::cout << "\n";
+
+    std::cout << "vector E:M121DS[]:";
+    std::vector<double> values = bf.GetNamedVector(when,"E:M121DS[]");
+    for (int i = 0; i < values.size(); i++) {
+        std::cout << values[i] << ", ";
+    }
+    std::cout << "\n";
+    
     bf.GetNamedData(1323726316.528,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
     bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);

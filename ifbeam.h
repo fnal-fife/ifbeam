@@ -26,7 +26,8 @@ private:
     double slot_time(int n);
     std::string slot_var(int n);
     double slot_value(int n, int j);
-   
+    void find_name(int &first_time_slot, double &first_time, int &search_slot, std::string curvar);
+    void find_first(int &first_time_slot, double &first_time, double when);
 
 public:
     static int _debug;
@@ -34,10 +35,13 @@ public:
     // constructor
     BeamFolder(std::string bundle_name, std::string url, double time_width);
 
-    // accessor
+    // accessors
     void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
+    std::vector<double> GetNamedVector(double when,  std::string variable_name);
 
-    double getCacheStartTime(){ return _cache_start; };
-    double getCacheEndTime(){ return _cache_end; };
-
+    // info about what is in cache...
+    double GetCacheStartTime(){ return _cache_start; };
+    double GetCacheEndTime(){ return _cache_end; };
+    std::vector<double> GetTimeList();
+    std::vector<std::string> GetDeviceList();
 };
