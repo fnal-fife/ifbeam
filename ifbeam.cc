@@ -20,6 +20,17 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _cache_start = 0.0;
     _cache_end = 0.0;
     _cache_slot = -1;
+    _valid_window = 60.0;
+}
+
+void 
+BeamFolder::setValidWindow(double w) {
+   _valid_window = w;
+}
+
+double 
+BeamFolder::getValidWindow() {
+   return _valid_window;
 }
 
 void
@@ -252,7 +263,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
 }
 
 std::vector<double> 
-BeamFolder::GetNamedVector(double when, std::string variable_name) {
+BeamFolder::GetNamedVector(double when, std::string variable_name) throw (WebAPIException) {
     double first_time;
     int first_time_slot;
     int search_slot;
@@ -265,6 +276,10 @@ BeamFolder::GetNamedVector(double when, std::string variable_name) {
 
     if ( variable_name != slot_var(search_slot)) {
         throw(WebAPIException(variable_name, "-- variable not found"));
+    }
+
+    if ( abs(slot_time(search_slot) - when) > _valid_window ) {
+        throw(WebAPIException(variable_name, "-- only stale data found"));
     }
 
     //  keep looking for a value until we get an exception

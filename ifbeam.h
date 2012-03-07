@@ -29,6 +29,7 @@ private:
     void find_name(int &first_time_slot, double &first_time, int &search_slot, std::string curvar);
     void find_first(int &first_time_slot, double &first_time, double when);
 
+    double _valid_window;
 public:
     static int _debug;
 
@@ -37,11 +38,13 @@ public:
 
     // accessors
     void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
-    std::vector<double> GetNamedVector(double when,  std::string variable_name);
+    std::vector<double> GetNamedVector(double when,  std::string variable_name) throw(WebAPIException);
 
     // info about what is in cache...
     double GetCacheStartTime(){ return _cache_start; };
     double GetCacheEndTime(){ return _cache_end; };
     std::vector<double> GetTimeList();
     std::vector<std::string> GetDeviceList();
+    void setValidWindow(double);
+    double getValidWindow();
 };
