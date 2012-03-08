@@ -4,8 +4,8 @@ SRC=nucondb.cc WebAPI.cc demo.cc utils.cc ifbeam.cc
 HDR=nucondb.h WebAPI.h ifbeam.h utils.h
 DEFS=
 TESTDEFS=-DUNITTEST
-CFLAGS=-g $(DEFS) 
-CXXFLAGS=-g $(DEFS) 
+CFLAGS=-fPIC -g $(DEFS) 
+CXXFLAGS=-fPIC -g $(DEFS) 
 BIN= demo nucondb-test WebAPI-test ifbeam-test
 
 all: $(BIN) $(LIB)
