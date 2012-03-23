@@ -1,37 +1,25 @@
-LIB=libnucondb.a 
-OBJ=nucondb.o WebAPI.o utils.o ifbeam.o
-SRC=nucondb.cc WebAPI.cc demo.cc utils.cc ifbeam.cc
-HDR=nucondb.h WebAPI.h ifbeam.h utils.h
-DEFS=
+LIB=libifbeam.a 
+UTLOBJ=../util/*.o
+UTLSRC=../util/*.cc
+HDR=ifbeam.h ../util/*.h
+OBJ=ifbeam.o $(UTL)
+SRC=ifbeam.cc
+TST=ifbeam-test
 TESTDEFS=-DUNITTEST
-CFLAGS=-fPIC -g $(DEFS) 
 CXXFLAGS=-fPIC -g $(DEFS) 
-BIN= demo nucondb-test WebAPI-test ifbeam-test
 
-all: $(BIN) $(LIB)
+all: $(BIN) $(TST) $(LIB)
 
 clean:
-	rm -f *.o *.a $(BIN) nucondb-client.tgz 
+	rm -f *.o *.a 
 
-distrib: $(SRC) $(HDR)
-	tar czvf nucondb-client.tgz Makefile $(SRC) $(HDR)
-
-$(LIB): $(OBJ)
+$(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
-	ar qv $(LIB) $(OBJ)
+	ar qv $(LIB) $(OBJ) $(UTLOBJ)
 
-ifbeam-test: ifbeam.cc $(LIB)
-	g++ -o $@ $(TESTDEFS) $(CFLAGS) ifbeam.cc $(LIB)
+$(UTLOBJ):
+	cd ../util; make
 
-nucondb-test: nucondb.cc $(LIB)
-	g++ -o $@ $(TESTDEFS) $(CFLAGS) nucondb.cc $(LIB)
+%-test: %.cc
+	g++ -o $@ $(TESTDEFS) $(CXXFLAGS) $(UTLOBJ) $<
 
-WebAPI-test: WebAPI.cc WebAPI.h
-	g++ -o $@ $(TESTDEFS) $(CFLAGS) WebAPI.cc 
-
-demo: demo.o $(LIB)
-	g++ -o $@ $(CFLAGS) demo.o $(LIB)
-  
-WebAPI.o: WebAPI.h
-
-nucondb.o: nucondb.h

@@ -8,8 +8,8 @@
 #include <string.h>
 #include <errno.h>
 #include "ifbeam.h"
-#include "utils.h"
-#include "WebAPI.h"
+#include "../util/utils.h"
+#include "../util/WebAPI.h"
 
 int BeamFolder::_debug;
 
