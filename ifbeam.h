@@ -2,6 +2,8 @@
 #include <vector>
 #include "../util/WebAPI.h"
 
+namespace ifbeam_ns {
+
 class BeamFolder {
 private:
     // initialization parameters
@@ -48,3 +50,7 @@ public:
     void setValidWindow(double);
     double getValidWindow();
 };
+
+}
+
+using namespace ifbeam_ns;

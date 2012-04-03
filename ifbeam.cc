@@ -11,6 +11,9 @@
 #include "../util/utils.h"
 #include "../util/WebAPI.h"
 
+
+namespace ifbeam_ns {
+
 int BeamFolder::_debug;
 
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
@@ -331,6 +334,7 @@ BeamFolder::GetDeviceList() {
    return res;
 }
 
+}
 
 #ifdef UNITTEST
 main() {
