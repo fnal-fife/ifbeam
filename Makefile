@@ -10,6 +10,12 @@ CXXFLAGS=-fPIC -g $(DEFS)
 
 all: $(BIN) $(TST) $(LIB)
 
+install:
+	test -d ../lib || mkdir ../lib
+	test -d ../include || mkdir -p ../include
+	cp $(LIB) ../lib
+	cp $(HDR) ../include
+
 clean:
 	rm -f *.o *.a 
 
