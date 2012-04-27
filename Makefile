@@ -6,7 +6,7 @@ OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test ifbeam_art_test
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-fPIC -g $(DEFS) 
+CXXFLAGS=-fPIC -g $(DEFS) $(ARCH)
 
 all: $(BIN) $(TST) $(LIB)
 
@@ -30,4 +30,4 @@ $(UTLOBJ):
 	g++ -o $@ $(TESTDEFS) $(CXXFLAGS) $(UTLOBJ) $<
 
 ifbeam_art_test: ifbeam_art_test.cc ifbeam_art.cc ifbeam.o ../util/WebAPI.o ../util/utils.o
-	g++ -o ifbeam_art_test ifbeam_art_test.cc ifbeam_art.cc ifbeam.o ../util/WebAPI.o ../util/utils.o
+	g++ $(ARCH) -o ifbeam_art_test ifbeam_art_test.cc ifbeam_art.cc ifbeam.o ../util/WebAPI.o ../util/utils.o
