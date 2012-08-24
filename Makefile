@@ -29,5 +29,3 @@ $(UTLOBJ):
 %-test: %.cc
 	g++ -o $@ $(TESTDEFS) $(CXXFLAGS) $(UTLOBJ) $<
 
-ifbeam_art_test: ifbeam_art_test.cc ifbeam_art.cc ifbeam.o ../util/WebAPI.o ../util/utils.o
-	g++ $(ARCH) -o ifbeam_art_test ifbeam_art_test.cc ifbeam_art.cc ifbeam.o ../util/WebAPI.o ../util/utils.o
