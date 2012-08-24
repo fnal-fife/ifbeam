@@ -4,7 +4,7 @@ UTLSRC=../util/*.cc
 HDR=ifbeam.h ../util/*.h
 OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
-TST=ifbeam-test ifbeam_art_test
+TST=ifbeam-test
 TESTDEFS=-DUNITTEST
 CXXFLAGS=-fPIC -g $(DEFS) $(ARCH)
 
