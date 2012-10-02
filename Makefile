@@ -1,4 +1,5 @@
 LIB=libifbeam.a 
+SHLIB=libifbeam.so
 UTLOBJ=../util/*.o
 UTLSRC=../util/*.cc
 HDR=ifbeam.h ../util/*.h
@@ -8,7 +9,7 @@ TST=ifbeam-test
 TESTDEFS=-DUNITTEST
 CXXFLAGS=-fPIC -g $(DEFS) $(ARCH)
 
-all: $(BIN) $(TST) $(LIB)
+all: $(BIN) $(TST) $(LIB) $(SHLIB)
 
 install:
 	test -d ../lib || mkdir ../lib
@@ -22,6 +23,9 @@ clean:
 $(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
 	ar qv $(LIB) $(OBJ) $(UTLOBJ)
+
+$(SHLIB): $(OBJ) $(UTLOBJ)
+	g++ --shared -o $(SHLIB) $(OBJ) $(UTILOBJ)
 
 $(UTLOBJ):
 	cd ../util; make
