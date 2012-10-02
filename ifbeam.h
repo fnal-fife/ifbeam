@@ -1,3 +1,5 @@
+#ifndef IFBEAM_H
+#define IFBEAM_H
 #include <string>
 #include <vector>
 #include "../util/WebAPI.h"
@@ -54,3 +56,4 @@ public:
 }
 
 using namespace ifbeam_ns;
+#endif //IFBEAM_H
