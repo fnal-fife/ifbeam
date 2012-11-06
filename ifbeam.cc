@@ -39,7 +39,6 @@ BeamFolder::getValidWindow() {
 void
 BeamFolder::FillCache(double when) throw(WebAPIException) {
     std::vector<std::string>::iterator it;
-    int i,j;
     std::string st;
 
     if (when >= _cache_start && when < _cache_end ) {
@@ -207,7 +206,6 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
     int first_time_slot;
     int array_slot;
     int search_slot;
-    int found;
     double first_time;
 
     _debug && std::cout << "looking for time" <<  when << "\n";
@@ -234,7 +232,6 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
         // if we have a [n] on the end, set slot to n, and 
         // make it var[]
         //  
-        found = 0;
         bpos = rvit->find('[');
         if (bpos != std::string::npos) {
             array_slot = atoi(rvit->c_str()+bpos+1);
@@ -337,6 +334,7 @@ BeamFolder::GetDeviceList() {
 }
 
 #ifdef UNITTEST
+int
 main() {
     double when = 1323722800.0;
     double ehmgpr, em121ds0, em121ds5;
@@ -356,21 +354,21 @@ main() {
  
     std::cout << "time stamps:";
     std::vector<double> times = bf.GetTimeList();
-    for (int i = 0; i < times.size(); i++) {
+    for (size_t i = 0; i < times.size(); i++) {
         std::cout << times[i] << ", ";
     }
     std::cout << "\n";
 
     std::cout << "variables:";
     std::vector<std::string> vars = bf.GetDeviceList();
-    for (int i = 0; i < vars.size(); i++) {
+    for (size_t i = 0; i < vars.size(); i++) {
         std::cout << vars[i] << ", ";
     }
     std::cout << "\n";
 
     std::cout << "vector E:M121DS[]:";
     std::vector<double> values = bf.GetNamedVector(when,"E:M121DS[]");
-    for (int i = 0; i < values.size(); i++) {
+    for (size_t i = 0; i < values.size(); i++) {
         std::cout << values[i] << ", ";
     }
     std::cout << "\n";

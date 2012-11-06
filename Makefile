@@ -7,7 +7,7 @@ OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-fPIC -g $(DEFS) $(ARCH)
+CXXFLAGS=-pedantic-errors -Wall -Werror -fPIC -g $(DEFS) $(ARCH)
 
 all: $(BIN) $(TST) $(LIB) $(SHLIB)
 
