@@ -10,6 +10,7 @@
 #include "ifbeam.h"
 #include "../util/utils.h"
 #include "../util/WebAPI.h"
+#include <math.h>
 
 
 namespace ifbeam_ns {
@@ -49,7 +50,7 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     // cache is flushed...
     _values.clear();
     // we average 15 lines/second so preallocate some space
-    _values.reserve(_time_width*15);
+    _values.reserve(int(_time_width*15));
     _n_values = 0;
     _cache_slot = -1;
 
@@ -111,7 +112,7 @@ BeamFolder::slot_value(int n, int j) {
      return atof(s.substr(p1+1,p2-p1).c_str());
 }
 
-int time_eq(double x, double y) { return abs(x -  y) < .0001; }
+int time_eq(double x, double y) { return fabs(x -  y) < .0001; }
 
 void
 BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
@@ -128,7 +129,7 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 	// start proportionally through the data and search for the time boundary
 	// nearest the time we are looking for
 
-	first_time_slot = _n_values * (when - _cache_start) / (_cache_end - _cache_start);
+	first_time_slot = int(_n_values * (when - _cache_start) / (_cache_end - _cache_start));
 
 	while( first_time_slot < _n_values-1 && slot_time(first_time_slot) < when ) {
 	   first_time_slot++;
@@ -142,7 +143,7 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 
         // pick the closer time
         if (first_time_slot < _n_values-1 && 
-            abs(slot_time(first_time_slot) - when) > abs(slot_time(first_time_slot+1) - when) ){
+            fabs(slot_time(first_time_slot) - when) > fabs(slot_time(first_time_slot+1) - when) ){
 
             _debug && std::cout << "switching from reference time:" 
 				<< slot_time(first_time_slot) << "\n";
@@ -278,7 +279,7 @@ BeamFolder::GetNamedVector(double when, std::string variable_name) throw (WebAPI
         throw(WebAPIException(variable_name, "-- variable not found"));
     }
 
-    if ( abs(slot_time(search_slot) - when) > _valid_window ) {
+    if ( fabs(slot_time(search_slot) - when) > _valid_window ) {
         throw(WebAPIException(variable_name, "-- only stale data found"));
     }
 

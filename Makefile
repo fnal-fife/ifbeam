@@ -1,3 +1,5 @@
+SRCDIR=../../util/
+VPATH=$(SRCDIR)
 LIB=libifbeam.a 
 SHLIB=libifbeam.so
 UTLOBJ=../util/*.o
@@ -7,7 +9,9 @@ OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Werror -fPIC -g $(DEFS) $(ARCH)
+CXXFLAGS=-pedantic-errors -Wall -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR)
+
+VPATH=../../ifbeam
 
 all: $(BIN) $(TST) $(LIB) $(SHLIB)
 
