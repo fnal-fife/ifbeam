@@ -9,7 +9,7 @@ OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR)
+CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR)
 
 VPATH=../../ifbeam
 
