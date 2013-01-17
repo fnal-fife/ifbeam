@@ -39,3 +39,4 @@ $(UTLOBJ):
 
 %.o: %.cc
 	g++ -c -o $@  $(CXXFLAGS) $< 
+ifbeam.o: ifbeam.cc ../util/WebAPI.h 
