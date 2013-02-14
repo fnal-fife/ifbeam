@@ -29,7 +29,7 @@ $(LIB): $(OBJ) $(UTLOBJ)
 	ar qv $(LIB) $(OBJ) $(UTLOBJ)
 
 $(SHLIB): $(OBJ) $(UTLOBJ)
-	g++ --shared -o $(SHLIB) $(OBJ) $(UTILOBJ)
+	g++ --shared -o $(SHLIB) $(OBJ) $(UTLOBJ)
 
 $(UTLOBJ):
 	cd ../util; make
