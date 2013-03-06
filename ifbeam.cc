@@ -272,6 +272,8 @@ BeamFolder::GetNamedVector(double when, std::string variable_name) throw (WebAPI
     int i;
     std::vector<double> res;
    
+    FillCache(when);
+
     find_first(first_time_slot, first_time, when);
     find_name(first_time_slot, first_time, search_slot, variable_name);
 
