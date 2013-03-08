@@ -70,13 +70,19 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
 
     _debug && std::cout << "got line: " << st << "\n";
 
-    while( !s.data().eof() ) {
+    while( !s.data().eof() && !s.data().fail() ) {
 	getline(s.data(), st);
 
         _debug && std::cout << "got line: " << st << "\n";
 
 	_values.push_back(st);
         _n_values++;
+    }
+    if ( s.data().fail() && !s.data().eof() ) {
+        throw(WebAPIException("ios.h fail()  error reading data from server",""));
+    }
+    if (_n_values == 0) {
+        throw(WebAPIException("No data values returned from server for URL: ",varurl.str()));
     }
     _cache_start = when;
     _cache_end = when + _time_width;
@@ -383,8 +389,8 @@ main() {
     bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
     std::cout << "Done!\n";
-  } catch (WebAPIException we) {
-       std::cout << "got exception:" << &we << "\n";
+  } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
   }
 
 }
