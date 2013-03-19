@@ -42,7 +42,7 @@ public:
 
     // accessors
     void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
-    std::vector<double> GetNamedVector(double when,  std::string variable_name) throw(WebAPIException);
+    std::vector<double> GetNamedVector(double when,  std::string variable_name, double *actual_time = 0) throw(WebAPIException);
 
     // info about what is in cache...
     double GetCacheStartTime(){ return _cache_start; };

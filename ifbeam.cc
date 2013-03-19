@@ -208,12 +208,15 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
     std::vector<std::string>::iterator rvit, it;
     std::string curvar;
     double *curdest;
+    double *timedest;
     size_t bpos;
+    size_t atpos;
     va_list al;
     int first_time_slot;
     int array_slot;
     int search_slot;
     double first_time;
+    bool append_time;
 
     _debug && std::cout << "looking for time" <<  when << "\n";
     // fetch data into cache (if needed)
@@ -239,6 +242,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
         // if we have a [n] on the end, set slot to n, and 
         // make it var[]
         //  
+
         bpos = rvit->find('[');
         if (bpos != std::string::npos) {
             array_slot = atoi(rvit->c_str()+bpos+1);
@@ -250,11 +254,20 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
             array_slot = 0;
         }
 
+        atpos = curvar.find('@');
+        if (atpos != std::string::npos) {
+            curvar = curvar.substr(0,atpos) + curvar.substr(atpos+1);
+            append_time = 1;
+        } else {
+            append_time = 0;
+        }
      
         // the place to put the value is the next varargs parameter
         curdest = (double *) va_arg(al,void*);
 
-
+        if (append_time) {
+             timedest = (double *) va_arg(al,void*);
+        }
 
         find_name(first_time_slot, first_time, search_slot, curvar);
 
@@ -263,6 +276,9 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
            std::vector <std::string> vallist;
            
            *curdest = slot_value(search_slot,array_slot);
+           if (append_time) {
+               *timedest = slot_time(search_slot);
+           }
         } else {
             throw(WebAPIException(curvar, "-- variable not found"));
         }
@@ -270,7 +286,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
 }
 
 std::vector<double> 
-BeamFolder::GetNamedVector(double when, std::string variable_name) throw (WebAPIException) {
+BeamFolder::GetNamedVector(double when, std::string variable_name, double *actual_time ) throw (WebAPIException) {
     double first_time;
     int first_time_slot;
     int search_slot;
@@ -289,6 +305,10 @@ BeamFolder::GetNamedVector(double when, std::string variable_name) throw (WebAPI
 
     if ( fabs(slot_time(search_slot) - when) > _valid_window ) {
         throw(WebAPIException(variable_name, "-- only stale data found"));
+    }
+
+    if (actual_time != 0) {
+       *actual_time = slot_time(search_slot);
     }
 
     //  keep looking for a value until we get an exception
@@ -347,6 +367,7 @@ int
 main() {
     double when = 1323722800.0;
     double ehmgpr, em121ds0, em121ds5;
+    double t1, t2;
     WebAPI::_debug = 1;
     BeamFolder::_debug = 1;
     std::string teststr("1321032116708,E:HMGPR,TORR,687.125");
@@ -360,6 +381,9 @@ main() {
     bf.GetNamedData(when,"E:M121DS[0],E:M121DS[5]",&em121ds0, &em121ds5);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
     std::cout << "got values " << em121ds0 << ',' << em121ds5 << "for E:M121DS[0,5]\n";
+
+    bf.GetNamedData(when,"E:M121DS@[0],E:M121DS@[5]",&em121ds0, &t1, &em121ds5, &t2);
+    std::cout << "got values " << em121ds0 << ',' << em121ds5 << "for E:M121DS[0,5] at time " << t1 << "\n";
  
     std::cout << "time stamps:";
     std::vector<double> times = bf.GetTimeList();
@@ -381,13 +405,23 @@ main() {
         std::cout << values[i] << ", ";
     }
     std::cout << "\n";
+
+    std::cout << "vector E:M121DS[] with time:";
+    values = bf.GetNamedVector(when,"E:M121DS[]",&t1);
+    std::cout << "at time: " << t1 << ": ";
+    for (size_t i = 0; i < values.size(); i++) {
+        std::cout << values[i] << ", ";
+    }
+    std::cout << "\n";
     
     bf.GetNamedData(1323726316.528,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
+    bf.GetNamedData(1323726316.528,"E:HMGPR@",&ehmgpr, &t1);
+    std::cout << "got value " << ehmgpr << "for E:HMGPR at time " << t1 << "\n";
     bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
-    bf.GetNamedData(1323726318.594,"E:HMGPR",&ehmgpr);
-    std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
+    bf.GetNamedData(1323726318.594,"E:HMGPR@",&ehmgpr,&t2);
+    std::cout << "got value " << ehmgpr << "for E:HMGPR at time " << t2 << "\n";
     std::cout << "Done!\n";
   } catch (WebAPIException &we) {
        std::cout << "got exception:" << we.what() << "\n";
