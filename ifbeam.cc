@@ -118,7 +118,7 @@ BeamFolder::slot_value(int n, int j) {
      return atof(s.substr(p1+1,p2-p1).c_str());
 }
 
-int time_eq(double x, double y) { return fabs(x -  y) < .0001; }
+int time_eq(double x, double y) { return fabs(x -  y) < .003; }
 
 void
 BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
@@ -366,6 +366,7 @@ BeamFolder::GetDeviceList() {
 int
 main() {
     double when = 1323722800.0;
+    double twhen = 1334332800.0;
     double ehmgpr, em121ds0, em121ds5;
     double t1, t2;
     WebAPI::_debug = 1;
@@ -375,8 +376,11 @@ main() {
     std::cout << std::setiosflags(std::ios::fixed);
  
   try {
-    // BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov/ifbeam",3600);
-    BeamFolder bf("NuMI_Physics", "http://dbweb3.fnal.gov:8080/ifbeam",3600);
+    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov:8088/ifbeam",20);
+    bf.GetNamedData(when,"E:TR101D@",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:TR101D at time " << t1 << "\n";
+    bf.GetNamedData(twhen,"E:TR101D@",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:TR101D at time " << t1 << "\n";
     bf.GetNamedData(when,"E:HMGPR",&ehmgpr);
     bf.GetNamedData(when,"E:M121DS[0],E:M121DS[5]",&em121ds0, &em121ds5);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
