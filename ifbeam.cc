@@ -20,7 +20,7 @@ int BeamFolder::_debug;
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
     _time_width = time_width;
     _bundle_name =  bundle_name;
-    _url = url;
+    _url = url.length() > 0 ? url : "http://dbweb0.fnal.gov:8088/ifbeam";
     _cache_start = 0.0;
     _cache_end = 0.0;
     _cache_slot = -1;
@@ -376,7 +376,7 @@ main() {
     std::cout << std::setiosflags(std::ios::fixed);
  
   try {
-    BeamFolder bf("NuMI_Physics", "http://dbweb0.fnal.gov:8088/ifbeam",20);
+    BeamFolder bf("NuMI_Physics");
     bf.GetNamedData(when,"E:TR101D@",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:TR101D at time " << t1 << "\n";
     bf.GetNamedData(twhen,"E:TR101D@",&ehmgpr,&t1);

@@ -26,7 +26,6 @@ private:
     std::vector<std::string> _values;
     int _n_values;
 
-    void FillCache(double time) throw(WebAPIException);
     double slot_time(int n);
     std::string slot_var(int n);
     double slot_value(int n, int j);
@@ -35,11 +34,13 @@ private:
 
     double _valid_window;
 public:
+
     static int _debug;
 
     // constructor
-    BeamFolder(std::string bundle_name, std::string url, double time_width);
+    BeamFolder(std::string bundle_name, std::string url = "", double time_width = 1200.0);
 
+    void FillCache(double time) throw(WebAPIException);
     // accessors
     void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
     std::vector<double> GetNamedVector(double when,  std::string variable_name, double *actual_time = 0) throw(WebAPIException);
