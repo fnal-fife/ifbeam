@@ -33,7 +33,13 @@ private:
     void find_first(int &first_time_slot, double &first_time, double when);
 
     double _valid_window;
+
+    double _epsilon;
 public:
+
+    void set_epsilon( double e ); 
+
+    int time_eq(double x, double y);
 
     static int _debug;
 

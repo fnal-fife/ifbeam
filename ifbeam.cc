@@ -25,6 +25,7 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _cache_end = 0.0;
     _cache_slot = -1;
     _valid_window = 60.0;
+    _epsilon = .125;
 }
 
 void 
@@ -118,7 +119,13 @@ BeamFolder::slot_value(int n, int j) {
      return atof(s.substr(p1+1,p2-p1).c_str());
 }
 
-int time_eq(double x, double y) { return fabs(x -  y) < .003; }
+void
+BeamFolder::set_epsilon( double e ) {
+  _epsilon = e;
+}
+
+int 
+BeamFolder::time_eq(double x, double y) { return fabs(x -  y) <= _epsilon ; }
 
 void
 BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
@@ -184,7 +191,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
             _debug && std::cout << "true?" 
 			    << (slot_var(search_slot) < curvar)<<  "\n";
 
-        while( search_slot < _n_values-1 && time_eq(slot_time(search_slot+1),first_time) && slot_var(search_slot) < curvar)  {
+        while( search_slot < _n_values-1 && time_eq(slot_time(search_slot+1),first_time) && slot_var(search_slot) != curvar  )  {
 
             search_slot++;
 
@@ -367,6 +374,7 @@ int
 main() {
     double when = 1323722800.0;
     double twhen = 1334332800.0;
+    double t2when = 1334332800.4;
     double ehmgpr, em121ds0, em121ds5;
     double t1, t2;
     WebAPI::_debug = 1;
@@ -377,10 +385,16 @@ main() {
  
   try {
     BeamFolder bf("NuMI_Physics");
+
+    bf.set_epsilon(.125);
+    bf.GetNamedData(t2when,"E:HP121@[1]",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+
     bf.GetNamedData(when,"E:TR101D@",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:TR101D at time " << t1 << "\n";
     bf.GetNamedData(twhen,"E:TR101D@",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:TR101D at time " << t1 << "\n";
+    
     bf.GetNamedData(when,"E:HMGPR",&ehmgpr);
     bf.GetNamedData(when,"E:M121DS[0],E:M121DS[5]",&em121ds0, &em121ds5);
     std::cout << "got value " << ehmgpr << "for E:HMGPR\n";
