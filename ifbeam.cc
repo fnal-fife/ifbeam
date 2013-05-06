@@ -25,7 +25,11 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _cache_end = 0.0;
     _cache_slot = -1;
     _valid_window = 60.0;
+    _valid_window = 120.0;
     _epsilon = .125;
+#ifndef OLD_CACHE
+    _values = 0;
+#endif
 }
 
 void 
@@ -38,6 +42,7 @@ BeamFolder::getValidWindow() {
    return _valid_window;
 }
 
+#ifdef OLD_CACHE
 void
 BeamFolder::FillCache(double when) throw(WebAPIException) {
     std::vector<std::string>::iterator it;
@@ -119,6 +124,65 @@ BeamFolder::slot_value(int n, int j) {
      return atof(s.substr(p1+1,p2-p1).c_str());
 }
 
+#else
+
+void
+BeamFolder::FillCache(double when) throw(WebAPIException) {
+    int err = 0;
+    time_t t0 = when;
+    time_t t1 = when + _time_width;
+
+    if (when >= _cache_start && when < _cache_end ) {
+        // we're already in the cache...
+        return;
+    }
+
+    if (_values) {
+        releaseDataset(_values);
+    }
+    _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
+    if (!_values && err)  throw(WebAPIException("getBundleForInterval", strerror(err)));
+    _cache_start = when;
+    _cache_end = when + _time_width;
+    _n_values = getNtuples(_values);
+}
+
+double 
+BeamFolder::slot_time(int n) {
+   int err = 0;
+   double res;
+   Tuple t = getTuple(_values, n);
+   res = getDoubleValue(t,0,&err)/1000.0;
+   if (err)  throw(WebAPIException("slot_time", strerror(err)));
+   releaseTuple(t);
+   return res;
+}
+
+std::string 
+BeamFolder::slot_var(int n) {
+   int err = 0;
+   static char buf[512];
+   Tuple t = getTuple(_values, n);
+   getStringValue(t,1,buf,512,&err);
+   if (err)  throw(WebAPIException("slot_var", strerror(err)));
+   std::string res(buf);
+   releaseTuple(t);
+   return res;
+}
+
+double 
+BeamFolder::slot_value(int n, int j) {
+   int err = 0;
+   double res;
+   Tuple t = getTuple(_values, n);
+   res = getDoubleValue(t, j+3, &err);
+   if (err)  throw(WebAPIException("getDoubleVal", strerror(err)));
+   releaseTuple(t);
+   return res;
+}
+
+#endif
+
 void
 BeamFolder::set_epsilon( double e ) {
   _epsilon = e;
@@ -151,9 +215,6 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 	   first_time_slot--;
 	}
 
-        _debug && std::cout << "after scans: " << first_time_slot 
-		            << "data: " << _values[first_time_slot] <<"\n";
-
         // pick the closer time
         if (first_time_slot < _n_values-1 && 
             fabs(slot_time(first_time_slot) - when) > fabs(slot_time(first_time_slot+1) - when) ){
@@ -183,7 +244,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
  
         // scan for named variable with this time
         _debug && std::cout << "searching for var: " << curvar << "\n";
-        _debug && std::cout << "checking slot: " << search_slot << " name: " << slot_var(search_slot) << " value: " << _values[search_slot] <<"\n";
+        _debug && std::cout << "checking slot: " << search_slot << " name: " << slot_var(search_slot) << "\n";
  
         if (search_slot < _n_values-1)
             _debug && std::cout << "true?" 
@@ -197,7 +258,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
 
             _debug && std::cout << "checking slot: " << search_slot 
 				<< " name: " << slot_var(search_slot) 
-				<< " value: " << _values[search_slot] <<"\n";
+				<<"\n";
 
             _debug && std::cout << "true?" 
 				<< time_eq(slot_time(search_slot+1), first_time) << "\n";
@@ -207,7 +268,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
          }
 
         _debug && std::cout << "after namesearch, search_slot is : " << search_slot 
-			<< "data: " << _values[search_slot] <<"\n";
+			<< "data: " << "\n";
 }
 void
 BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(WebAPIException) {
@@ -236,7 +297,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
 
     _debug && std::cout << "after scans, first_time_slot is : " 
                         << first_time_slot << "data: " 
-                        << _values[first_time_slot] <<"\n";
+                        << "\n";
    
     va_start(al, variable_list);
 

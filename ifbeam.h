@@ -4,6 +4,10 @@
 #include <vector>
 #include "../util/WebAPI.h"
 
+#ifndef OLD_CACHE
+#include "../fife_wda/ifbeam.h"
+#endif
+
 namespace ifbeam_ns {
 
 class BeamFolder {
@@ -23,7 +27,11 @@ private:
     double _cache_slot_time;
 
     // vector (in _variable_names order) of vectors of csv data lines 
+#ifdef OLD_CACHE
     std::vector<std::string> _values;
+#else
+    Dataset _values;
+#endif
     int _n_values;
 
     double slot_time(int n);

@@ -2,14 +2,14 @@ SRCDIR=../../util/
 VPATH=$(SRCDIR)
 LIB=libifbeam.a 
 SHLIB=libifbeam.so
-UTLOBJ=../util/*.o
+UTLOBJ=../util/*.o ../fife_wda/wda.o ../fife_wda/ifbeam.o
 UTLSRC=../util/*.cc
 HDR=ifbeam.h ../util/*.h
 OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR)
+CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda
 
 VPATH=../../ifbeam
 
@@ -29,13 +29,14 @@ $(LIB): $(OBJ) $(UTLOBJ)
 	ar qv $(LIB) $(OBJ) $(UTLOBJ)
 
 $(SHLIB): $(OBJ) $(UTLOBJ)
-	g++ --shared -o $(SHLIB) $(OBJ) $(UTLOBJ)
+	g++ --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) `test -r /usr/lib/libcurl.a && echo --static` -lcurl --dynamic 
 
 $(UTLOBJ):
 	cd ../util; make
 
 %-test: %.cc
-	g++ -o $@ $(TESTDEFS) $(CXXFLAGS) $(UTLOBJ) $<
+	g++ -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
+	g++ -o $@ $@.o  $(UTLOBJ) `test -r /usr/lib/libcurl.a && echo --static` -lcurl --dynamic 
 
 %.o: %.cc
 	g++ -c -o $@  $(CXXFLAGS) $< 
