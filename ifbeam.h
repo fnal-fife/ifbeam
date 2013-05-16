@@ -5,7 +5,7 @@
 #include "../util/WebAPI.h"
 
 #ifndef OLD_CACHE
-#include "../fife_wda/ifbeam.h"
+#include "ifbeam_c.h"
 #endif
 
 namespace ifbeam_ns {
