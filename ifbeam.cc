@@ -144,14 +144,14 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     if (!_values && err)  throw(WebAPIException("getBundleForInterval", strerror(err)));
     _cache_start = when;
     _cache_end = when + _time_width;
-    _n_values = getNtuples(_values);
+    _n_values = getNtuples(_values) - 1;
 }
 
 double 
 BeamFolder::slot_time(int n) {
    int err = 0;
    double res;
-   Tuple t = getTuple(_values, n);
+   Tuple t = getTuple(_values, n+1);
    res = getDoubleValue(t,0,&err)/1000.0;
    if (err)  throw(WebAPIException("slot_time", strerror(err)));
    releaseTuple(t);
@@ -162,7 +162,7 @@ std::string
 BeamFolder::slot_var(int n) {
    int err = 0;
    static char buf[512];
-   Tuple t = getTuple(_values, n);
+   Tuple t = getTuple(_values, n+1);
    getStringValue(t,1,buf,512,&err);
    if (err)  throw(WebAPIException("slot_var", strerror(err)));
    std::string res(buf);
@@ -174,7 +174,7 @@ double
 BeamFolder::slot_value(int n, int j) {
    int err = 0;
    double res;
-   Tuple t = getTuple(_values, n);
+   Tuple t = getTuple(_values, n+1);
    res = getDoubleValue(t, j+3, &err);
    if (err)  throw(WebAPIException("getDoubleVal", strerror(err)));
    releaseTuple(t);
@@ -228,7 +228,7 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
         _debug && std::cout << "picked reference time:" << first_time << "\n";
        
         // find the start of the picked time
-	while( first_time_slot > 1 && time_eq(slot_time(first_time_slot-1),first_time) ) {
+	while( first_time_slot > 0 && time_eq(slot_time(first_time_slot-1),first_time) ) {
 	   first_time_slot--;
 	}
 

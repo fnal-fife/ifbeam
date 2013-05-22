@@ -36,7 +36,7 @@ $(UTLOBJ):
 
 %-test: %.cc
 	g++ -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
-	g++ -o $@ $@.o  $(UTLOBJ) -lcurl --dynamic 
+	g++ -o $@ $@.o $(ARCH)  $(UTLOBJ) -lcurl 
 
 %.o: %.cc
 	g++ -c -o $@  $(CXXFLAGS) $< 
