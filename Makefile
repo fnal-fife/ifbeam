@@ -29,7 +29,7 @@ $(LIB): $(OBJ) $(UTLOBJ)
 	ar qv $(LIB) $(OBJ) $(UTLOBJ)
 
 $(SHLIB): $(OBJ) $(UTLOBJ)
-	g++ --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) `test -r /usr/lib/libcurl.a && echo --static` -lcurl --dynamic 
+	g++ $(ARCH) --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) -lcurl 
 
 $(UTLOBJ):
 	cd ../util; make

@@ -130,7 +130,7 @@ void
 BeamFolder::FillCache(double when) throw(WebAPIException) {
     int err = 0;
     time_t t0 = (time_t) when;
-    time_t t1 = (time_t) when + _time_width;
+    time_t t1 = (time_t) (when + _time_width);
 
     if (when >= _cache_start && when < _cache_end ) {
         // we're already in the cache...
