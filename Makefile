@@ -36,7 +36,7 @@ $(UTLOBJ):
 
 %-test: %.cc
 	g++ -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
-	g++ -o $@ $@.o  $(UTLOBJ) `test -r /usr/lib/libcurl.a && echo --static` -lcurl --dynamic 
+	g++ -o $@ $@.o  $(UTLOBJ) -lcurl --dynamic 
 
 %.o: %.cc
 	g++ -c -o $@  $(CXXFLAGS) $< 
