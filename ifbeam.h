@@ -53,6 +53,7 @@ public:
 
     // constructor
     BeamFolder(std::string bundle_name, std::string url = "", double time_width = 1200.0);
+    ~BeamFolder();
 
     void FillCache(double time) throw(WebAPIException);
     // accessors

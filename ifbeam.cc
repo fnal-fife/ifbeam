@@ -32,6 +32,11 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
 #endif
 }
 
+BeamFolder::~BeamFolder() {
+    if (_values) {
+        releaseDataset(_values);
+    }
+}
 void 
 BeamFolder::setValidWindow(double w) {
    _valid_window = w;
