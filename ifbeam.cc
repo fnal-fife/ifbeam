@@ -33,9 +33,13 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
 }
 
 BeamFolder::~BeamFolder() {
+#ifndef OLD_CACHE
     if (_values) {
         releaseDataset(_values);
     }
+#else
+    ;
+#endif
 }
 void 
 BeamFolder::setValidWindow(double w) {
@@ -450,7 +454,7 @@ main() {
     std::cout << std::setiosflags(std::ios::fixed);
  
   try {
-    BeamFolder bf("NuMI_Physics");
+    BeamFolder bf("NuMI_all");
 
     bf.set_epsilon(.125);
     bf.GetNamedData(t2when,"E:HP121@[1]",&ehmgpr,&t1);

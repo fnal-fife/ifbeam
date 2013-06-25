@@ -8,6 +8,7 @@ HDR=ifbeam.h ../util/*.h
 OBJ=ifbeam.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
+#DEFS=-DOLD_CACHE
 TESTDEFS=-DUNITTEST
 CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda
 
