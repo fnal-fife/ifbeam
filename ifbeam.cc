@@ -154,6 +154,12 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     _cache_start = when;
     _cache_end = when + _time_width;
     _n_values = getNtuples(_values) - 1;
+
+    if (_n_values == 0 ) {
+         std::stringstream tbuf; 
+         tbuf << when;
+         throw(WebAPIException("No data available for this time: ", tbuf.str() ));
+    }
 }
 
 double 
@@ -161,6 +167,7 @@ BeamFolder::slot_time(int n) {
    int err = 0;
    double res;
    Tuple t = getTuple(_values, n+1);
+   if (!t) throw(WebAPIException("slot_time"," getTuple"));
    res = getDoubleValue(t,0,&err)/1000.0;
    if (err)  throw(WebAPIException("slot_time", strerror(err)));
    releaseTuple(t);
@@ -172,6 +179,7 @@ BeamFolder::slot_var(int n) {
    int err = 0;
    static char buf[512];
    Tuple t = getTuple(_values, n+1);
+   if (!t) throw(WebAPIException("slot_var"," getTuple"));
    getStringValue(t,1,buf,512,&err);
    if (err)  throw(WebAPIException("slot_var", strerror(err)));
    std::string res(buf);
@@ -184,6 +192,7 @@ BeamFolder::slot_value(int n, int j) {
    int err = 0;
    double res;
    Tuple t = getTuple(_values, n+1);
+   if (!t) throw(WebAPIException("slot_value","getTuple"));
    res = getDoubleValue(t, j+3, &err);
    if (err)  throw(WebAPIException("getDoubleVal", strerror(err)));
    releaseTuple(t);
@@ -445,6 +454,8 @@ main() {
     double when = 1323722800.0;
     double twhen = 1334332800.0;
     double t2when = 1334332800.4;
+    double  now = time(0);
+    double  eighthours = now - (8 * 3600);
     double ehmgpr, em121ds0, em121ds5;
     double t1, t2;
     WebAPI::_debug = 1;
@@ -457,6 +468,9 @@ main() {
     BeamFolder bf("NuMI_all");
 
     bf.set_epsilon(.125);
+
+    bf.GetNamedData(eighthours,"E:HP121@[1]",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
     bf.GetNamedData(t2when,"E:HP121@[1]",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
 
