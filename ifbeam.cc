@@ -120,7 +120,7 @@ double
 BeamFolder::slot_value(int n, int j) {
      std::string s = _values[n];
      int i;
-     size_t p1,p2;
+     size_t p1=0,p2=0;
      p2=0;
      for( i = 0; i < j+4 ; i++ ) {
          p1 = p2;
@@ -293,7 +293,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
     std::vector<std::string>::iterator rvit, it;
     std::string curvar;
     double *curdest;
-    double *timedest;
+    double *timedest = 0;
     size_t bpos;
     size_t atpos;
     va_list al;
