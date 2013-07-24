@@ -10,7 +10,7 @@ SRC=ifbeam.cc
 TST=ifbeam-test
 #DEFS=-DOLD_CACHE
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda
+CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda
 
 VPATH=../../ifbeam
 
