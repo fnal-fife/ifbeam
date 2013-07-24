@@ -24,7 +24,6 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _cache_start = 0.0;
     _cache_end = 0.0;
     _cache_slot = -1;
-    _valid_window = 60.0;
     _valid_window = 120.0;
     _epsilon = .125;
 #ifndef OLD_CACHE
@@ -309,6 +308,9 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
     FillCache(when);
 
     // find first slot with this time; may have it cached...
+    if (_n_values == 0) {
+         throw(WebAPIException(curvar, "No data found at this time"));
+    }
 
 
     find_first(first_time_slot, first_time, when);
@@ -356,7 +358,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
         }
 
         find_name(first_time_slot, first_time, search_slot, curvar);
-
+        
 
         if ( curvar == slot_var(search_slot)) {
            std::vector <std::string> vallist;
@@ -381,6 +383,10 @@ BeamFolder::GetNamedVector(double when, std::string variable_name, double *actua
     std::vector<double> res;
    
     FillCache(when);
+
+    if (_n_values == 0) {
+         throw(WebAPIException(variable_name, "No data found at this time"));
+    }
 
     find_first(first_time_slot, first_time, when);
     find_name(first_time_slot, first_time, search_slot, variable_name);
@@ -433,15 +439,16 @@ std::vector<std::string>
 BeamFolder::GetDeviceList() {
    std::vector<std::string> res;
    std::string lookfor;
-   // happily assume the second time you see the first variable,
-   // you've seen everybody once.
-   lookfor = slot_var(0);
+
    res.push_back(lookfor);
    for(int  i = 1; i < _n_values; i++) {
-        if (lookfor == slot_var(i)) {
-            break;
-        }
-        res.push_back(slot_var(i));
+        bool seen_before = false;
+        for( unsigned int j = 0; j < res.size() ; j++ )
+           if (res[j] == slot_var(i))
+              seen_before = true;
+
+        if (!seen_before)
+            res.push_back(slot_var(i));
    }
    return res;
 }
@@ -454,8 +461,7 @@ main() {
     double when = 1323722800.0;
     double twhen = 1334332800.0;
     double t2when = 1334332800.4;
-    double  now = time(0);
-    double  eighthours = now - (8 * 3600);
+    double  nodatatime = 1373970148.000000;
     double ehmgpr, em121ds0, em121ds5;
     double t1, t2;
     WebAPI::_debug = 1;
@@ -464,13 +470,30 @@ main() {
 
     std::cout << std::setiosflags(std::ios::fixed);
  
+  BeamFolder bf("NuMI_all");
+  bf.set_epsilon(.125);
+
   try {
-    BeamFolder bf("NuMI_all");
-
-    bf.set_epsilon(.125);
-
-    bf.GetNamedData(eighthours,"E:HP121@[1]",&ehmgpr,&t1);
+    bf.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+  } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
+  }
+  try {
+    bf.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+  } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
+  }
+
+  try {
+    bf.GetNamedData(t2when,"E:NOSUCHVARIABLE",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+  } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
+  }
+
+  try {
     bf.GetNamedData(t2when,"E:HP121@[1]",&ehmgpr,&t1);
     std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
 
