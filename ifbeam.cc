@@ -28,6 +28,8 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _epsilon = .125;
 #ifndef OLD_CACHE
     _values = 0;
+    _cur_row = 0;
+    _cur_row_num = -1;
 #endif
 }
 
@@ -35,6 +37,9 @@ BeamFolder::~BeamFolder() {
 #ifndef OLD_CACHE
     if (_values) {
         releaseDataset(_values);
+    }
+    if (_cur_row) {
+       releaseTuple(_cur_row);
     }
 #else
     ;
@@ -161,15 +166,27 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     }
 }
 
+Tuple
+BeamFolder::cachedGetTuple(int n) {
+   if (n != _cur_row_num) {
+       if (_cur_row) {
+	  releaseTuple(_cur_row);
+       }
+       _cur_row = getTuple(_values, n);
+       _cur_row_num = n;
+   }
+   return _cur_row;
+}
+
 double 
 BeamFolder::slot_time(int n) {
    int err = 0;
    double res;
-   Tuple t = getTuple(_values, n+1);
+   Tuple t = cachedGetTuple( n+1);
    if (!t) throw(WebAPIException("slot_time"," getTuple"));
    res = getDoubleValue(t,0,&err)/1000.0;
    if (err)  throw(WebAPIException("slot_time", strerror(err)));
-   releaseTuple(t);
+   //releaseTuple(t);
    return res;
 }
 
@@ -177,12 +194,12 @@ std::string
 BeamFolder::slot_var(int n) {
    int err = 0;
    static char buf[512];
-   Tuple t = getTuple(_values, n+1);
+   Tuple t = cachedGetTuple( n+1);
    if (!t) throw(WebAPIException("slot_var"," getTuple"));
    getStringValue(t,1,buf,512,&err);
    if (err)  throw(WebAPIException("slot_var", strerror(err)));
    std::string res(buf);
-   releaseTuple(t);
+   //releaseTuple(t);
    return res;
 }
 
@@ -190,11 +207,11 @@ double
 BeamFolder::slot_value(int n, int j) {
    int err = 0;
    double res;
-   Tuple t = getTuple(_values, n+1);
+   Tuple t = cachedGetTuple( n+1);
    if (!t) throw(WebAPIException("slot_value","getTuple"));
    res = getDoubleValue(t, j+3, &err);
    if (err)  throw(WebAPIException("getDoubleVal", strerror(err)));
-   releaseTuple(t);
+   //releaseTuple(t);
    return res;
 }
 

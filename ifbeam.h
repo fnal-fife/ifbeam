@@ -31,6 +31,10 @@ private:
     std::vector<std::string> _values;
 #else
     Dataset _values;
+    Tuple   _cur_row;
+    int     _cur_row_num;
+
+    Tuple   cachedGetTuple(int n);
 #endif
     int _n_values;
 
