@@ -470,7 +470,37 @@ BeamFolder::GetDeviceList() {
    return res;
 }
 
+
+BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) :
+   BeamFolder(bundle) , cur_slot(0) {
+   FillCache(start_time);
 }
+
+int
+BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<double> &values) {
+   static char buf[512];
+   int err;
+
+   if (cur_slot >= _n_values) {
+      FillCache(_cache_end + .001);
+      cur_slot = 0;
+   }
+   if (cur_slot >= _n_values) {
+      return 0;
+   }
+   Tuple t = cachedGetTuple(cur_slot++);
+   time = getDoubleValue(t,0,&err)/1000.0;
+   getStringValue(t,1,buf,512,&err);
+   name = buf;
+   values.clear();
+   for(int i = 3; i < getNfields(t); i++ ) {
+        values.push_back( getDoubleValue(t,i,&err) );
+   }
+   return 1;
+}
+
+}
+
 
 #ifdef UNITTEST
 int
@@ -567,6 +597,22 @@ main() {
     std::cout << "Done!\n";
   } catch (WebAPIException &we) {
        std::cout << "got exception:" << we.what() << "\n";
+  }
+
+  
+  std::string name;
+  double t;
+  std::vector<double> vals;
+  int count = 0;
+
+  BeamFolderScanner bfs("NuMI_all", 1334332800.4);
+  while( bfs.NextDataRow( t, name, vals ) && count++ < 100 )  {
+     
+    std::cout << "got time "<< t << " name " << name << "values:" ;
+    for(unsigned i = 0; i < vals.size(); i++ )
+       std::cout << vals[i] << ", " ;
+    std::cout << "\n";
+
   }
 
 }

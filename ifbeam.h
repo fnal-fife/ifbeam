@@ -11,7 +11,7 @@
 namespace ifbeam_ns {
 
 class BeamFolder {
-private:
+protected:
     // initialization parameters
     double _time_width;
     std::string _bundle_name;
@@ -71,6 +71,14 @@ public:
     std::vector<std::string> GetDeviceList();
     void setValidWindow(double);
     double getValidWindow();
+};
+
+class BeamFolderScanner : public BeamFolder {
+private: 
+    int cur_slot;
+public:
+    BeamFolderScanner(std::string bundle, double start_time);
+    int NextDataRow(double &time, std::string &name, std::vector<double> &values);
 };
 
 }
