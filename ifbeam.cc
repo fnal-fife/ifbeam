@@ -517,7 +517,7 @@ main() {
 
     std::cout << std::setiosflags(std::ios::fixed);
  
-  BeamFolder bf("NuMI_all");
+  BeamFolder bf("DoNotDeleteList");
   bf.set_epsilon(.125);
 
   try {
@@ -605,7 +605,7 @@ main() {
   std::vector<double> vals;
   int count = 0;
 
-  BeamFolderScanner bfs("NuMI_all", 1334332800.4);
+  BeamFolderScanner bfs("DoNotDeleteList", 1334332800.4);
   while( bfs.NextDataRow( t, name, vals ) && count++ < 100 )  {
      
     std::cout << "got time "<< t << " name " << name << "values:" ;
