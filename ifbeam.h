@@ -38,6 +38,8 @@ protected:
 #endif
     int _n_values;
 
+    int _values_column;
+
     double slot_time(int n);
     std::string slot_var(int n);
     double slot_value(int n, int j);

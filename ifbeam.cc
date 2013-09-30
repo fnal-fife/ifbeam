@@ -164,6 +164,21 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
          tbuf << when;
          throw(WebAPIException("No data available for this time: ", tbuf.str() ));
     }
+
+    
+    // look for a values column, default to 3
+    
+    _values_column = 3;
+
+    static char buf[512];
+    Tuple t = cachedGetTuple(0);
+    for (int i = 0; i < 10; i++ ) {
+        getStringValue(t,i,buf,512,&err);
+        if (0 == strncmp(buf,"value",5)) {
+            _values_column = i;
+            break;
+        }
+    }
 }
 
 Tuple
@@ -209,7 +224,7 @@ BeamFolder::slot_value(int n, int j) {
    double res;
    Tuple t = cachedGetTuple( n+1);
    if (!t) throw(WebAPIException("slot_value","getTuple"));
-   res = getDoubleValue(t, j+3, &err);
+   res = getDoubleValue(t, j+_values_column, &err);
    if (err)  throw(WebAPIException("getDoubleVal", strerror(err)));
    //releaseTuple(t);
    return res;
@@ -493,7 +508,7 @@ BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<doub
    getStringValue(t,1,buf,512,&err);
    name = buf;
    values.clear();
-   for(int i = 3; i < getNfields(t); i++ ) {
+   for(int i = _values_column; i < getNfields(t); i++ ) {
         values.push_back( getDoubleValue(t,i,&err) );
    }
    return 1;
