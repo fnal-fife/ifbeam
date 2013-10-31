@@ -153,7 +153,31 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     if (_values) {
         releaseDataset(_values);
     }
-    _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
+
+    int status = -1;
+    int tries = 0;
+    long int delay;
+
+    srandom(getpid() * getppid());
+
+    while (status != 200 && tries < 9) {
+        _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
+        status = getHTTPstatus(_values);
+        if ( status != 200 ) {
+            delay = random() % (5 * (1 << tries));
+            _debug && std::cout << "sleeping " << delay << " and retrying for status: " << status << " message: " << getHTTPmessage(_values) << "\n";
+            std::cerr << "sleeping " << delay << " and retrying for status: " << status << "\n";
+            sleep( delay );
+        }
+        tries++;
+    }
+
+    if (status != 200) {
+       char ebuf[80];
+       sprintf(ebuf, "HTTP error: status: %d:", status);
+       throw(WebAPIException(ebuf, getHTTPmessage(_values)));
+    }
+
     if (!_values && err)  throw(WebAPIException("getBundleForInterval", strerror(err)));
     _cache_start = when;
     _cache_end = when + _time_width;
@@ -532,7 +556,20 @@ main() {
 
     std::cout << std::setiosflags(std::ios::fixed);
  
-  BeamFolder bf("DoNotDeleteList");
+  // test with someone who doesn't have any data, to check error timeouts
+  std::cout << "Trying a nonexistent location\n";
+  BeamFolder bfu("NuMI_Physics","http://bel-kwinith.fnal.gov/");
+  bfu.set_epsilon(.125);
+
+  try {
+    bfu.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
+    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+  } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
+  }
+
+  std::cout << "Trying the default location\n";
+  BeamFolder bf("NuMI_Physics");
   bf.set_epsilon(.125);
 
   try {
