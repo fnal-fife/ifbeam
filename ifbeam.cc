@@ -11,7 +11,8 @@
 #include "../util/utils.h"
 #include "../util/WebAPI.h"
 #include <math.h>
-
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace ifbeam_ns {
 
