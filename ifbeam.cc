@@ -19,6 +19,14 @@ namespace ifbeam_ns {
 int BeamFolder::_debug;
 
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
+    // round to "standardized" time_width for cacheability
+    if (time_width <= 600) {
+        time_width = round_up_to_nearest(time_width, 60);
+    } else if ( time_width <= 2700 ) {
+        time_width = round_up_to_nearest(time_width, 900)
+    } else {
+        time_width = round_up_to_nearest(time_width, 3600);
+    }
     _time_width = time_width;
     _bundle_name =  bundle_name;
     _url = url.length() > 0 ? url : "http://ifb-data.fnal.gov:8089/ifbeam";
@@ -46,6 +54,23 @@ BeamFolder::~BeamFolder() {
     ;
 #endif
 }
+
+static int
+round_down_to_nearest(int n, int modulus) {
+    if (n % modulus == 0) {
+       return n;
+    else
+       return n - n % modulus;
+}
+
+static int
+round_up_to_nearest(int n, int modulus) {
+    if (n % modulus == 0) {
+       return n;
+    else
+       return n - n % modulus + modulus;
+}
+
 void 
 BeamFolder::setValidWindow(double w) {
    _valid_window = w;
@@ -66,6 +91,14 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
         // we're already in the cache...
         return;
     }
+
+    // round to standard windows...
+    if (_time_width <= 600) 
+        when = round_down_to_nearest(when,60);
+    else if (_time_width <= 2700)
+        when = round_down_to_nearest(when,900);
+    else 
+        when = round_down_to_nearest(when,3600);
 
     // cache is flushed...
     _values.clear();
@@ -143,6 +176,15 @@ BeamFolder::slot_value(int n, int j) {
 void
 BeamFolder::FillCache(double when) throw(WebAPIException) {
     int err = 0;
+
+    // round to standard windows...
+    if (_time_width <= 600) 
+        when = round_down_to_nearest(when,60);
+    else if (_time_width <= 2700)
+        when = round_down_to_nearest(when,900);
+    else 
+        when = round_down_to_nearest(when,3600);
+
     time_t t0 = (time_t) when;
     time_t t1 = (time_t) (when + _time_width);
 
