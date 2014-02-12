@@ -207,14 +207,13 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
         releaseDataset(_values);
     }
 
-    int status = -1;
-
-    srandom(getpid() * getppid());
 
     //
     // retries are now done in getBundleForInterval
     //
     _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
+
+    int status = getHTTPstatus(_values);
 
     if (status != 200) {
        char ebuf[80];
@@ -600,19 +599,19 @@ main() {
     std::cout << std::setiosflags(std::ios::fixed);
  
   // test with someone who doesn't have any data, to check error timeouts
-  std::cout << "Trying a nonexistent location\n";
-  BeamFolder bfu("NuMI_Physics","http://bel-kwinith.fnal.gov/");
-  bfu.set_epsilon(.125);
-
-  try {
-    bfu.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
-    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
-  } catch (WebAPIException &we) {
-       std::cout << "got exception:" << we.what() << "\n";
-  }
+ // std::cout << "Trying a nonexistent location\n";
+ // BeamFolder bfu("NuMI_Physics_A9","http://bel-kwinith.fnal.gov/");
+ // bfu.set_epsilon(.125);
+//
+ // try {
+  //  bfu.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
+   // std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+ // } catch (WebAPIException &we) {
+  //     std::cout << "got exception:" << we.what() << "\n";
+  //}
 
   std::cout << "Trying the default location\n";
-  BeamFolder bf("NuMI_Physics");
+  BeamFolder bf("NuMI_Physics_A9");
   bf.set_epsilon(.125);
 
   try {
@@ -700,7 +699,7 @@ main() {
   std::vector<double> vals;
   int count = 0;
 
-  BeamFolderScanner bfs("DoNotDeleteList", 1334332800.4);
+  BeamFolderScanner bfs("NuMI_Physics_A9", 1334332800.4);
   while( bfs.NextDataRow( t, name, vals ) && count++ < 100 )  {
      
     std::cout << "got time "<< t << " name " << name << "values:" ;
