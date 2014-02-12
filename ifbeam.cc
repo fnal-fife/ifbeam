@@ -13,17 +13,37 @@
 #include <math.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "../util/ifdh_version.h"
 
 namespace ifbeam_ns {
 
 int BeamFolder::_debug;
+
+static int
+round_down_to_nearest(int n, int modulus) {
+    if (n % modulus == 0) {
+       return n;
+    } else {
+       return n - n % modulus;
+    }
+}
+
+static int
+round_up_to_nearest(int n, int modulus) {
+    if (n % modulus == 0) {
+       return n;
+    } else {
+       return n - n % modulus + modulus;
+    }
+}
+
 
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
     // round to "standardized" time_width for cacheability
     if (time_width <= 600) {
         time_width = round_up_to_nearest(time_width, 60);
     } else if ( time_width <= 2700 ) {
-        time_width = round_up_to_nearest(time_width, 900)
+        time_width = round_up_to_nearest(time_width, 900);
     } else {
         time_width = round_up_to_nearest(time_width, 3600);
     }
@@ -39,6 +59,11 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _values = 0;
     _cur_row = 0;
     _cur_row_num = -1;
+
+    // pass info about us down for UserAgent: string
+    std::stringstream uabuf;
+    uabuf << "ifdh/" << IFDH_VERSION << "/Experiment/ " << getexperiment();
+    setUserAgent( (char *) uabuf.str().c_str() );
 #endif
 }
 
@@ -55,21 +80,6 @@ BeamFolder::~BeamFolder() {
 #endif
 }
 
-static int
-round_down_to_nearest(int n, int modulus) {
-    if (n % modulus == 0) {
-       return n;
-    else
-       return n - n % modulus;
-}
-
-static int
-round_up_to_nearest(int n, int modulus) {
-    if (n % modulus == 0) {
-       return n;
-    else
-       return n - n % modulus + modulus;
-}
 
 void 
 BeamFolder::setValidWindow(double w) {
@@ -198,22 +208,13 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     }
 
     int status = -1;
-    int tries = 0;
-    long int delay;
 
     srandom(getpid() * getppid());
 
-    while (status != 200 && tries < 9) {
-        _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
-        status = getHTTPstatus(_values);
-        if ( status != 200 ) {
-            delay = random() % (5 * (1 << tries));
-            _debug && std::cout << "sleeping " << delay << " and retrying for status: " << status << " message: " << getHTTPmessage(_values) << "\n";
-            std::cerr << "sleeping " << delay << " and retrying for status: " << status << "\n";
-            sleep( delay );
-        }
-        tries++;
-    }
+    //
+    // retries are now done in getBundleForInterval
+    //
+    _values = getBundleForInterval((_url + "/data").c_str(), _bundle_name.c_str(), t0, t1, &err);
 
     if (status != 200) {
        char ebuf[80];
@@ -228,10 +229,9 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
 
     if (_n_values == 0 ) {
          std::stringstream tbuf; 
-         tbuf << when;
-         throw(WebAPIException("No data available for this time: ", tbuf.str() ));
+         tbuf << std::setw(9) << when << " url: " <<  _url;
+         throw(WebAPIException("No ifbeam data available for this time: ", tbuf.str() ));
     }
-
     
     // look for a values column, default to 3
     
