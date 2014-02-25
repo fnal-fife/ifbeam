@@ -226,7 +226,7 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     _cache_end = when + _time_width;
     _n_values = getNtuples(_values) - 1;
 
-    if (_n_values == 0 ) {
+    if (_n_values <= 0 ) {
          std::stringstream tbuf; 
          tbuf << std::setw(9) << when << " url: " <<  _url;
          throw(WebAPIException("No ifbeam data available for this time: ", tbuf.str() ));
@@ -245,6 +245,9 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
             break;
         }
     }
+    // move _cache_end up to actual last time in buffer, so
+    // we move on to the next one if we hit it.
+    _cache_end = slot_time(_n_values-1);
 }
 
 Tuple
