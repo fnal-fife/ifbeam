@@ -245,9 +245,6 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
             break;
         }
     }
-    // move _cache_end up to actual last time in buffer, so
-    // we move on to the next one if we hit it.
-    _cache_end = slot_time(_n_values-1);
 }
 
 Tuple
@@ -325,6 +322,12 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 	// nearest the time we are looking for
 
 	first_time_slot = int(_n_values * (when - _cache_start) / (_cache_end - _cache_start));
+
+        if (first_time_slot > _n_values - 1)
+            first_time_slot = _n_values - 1;
+
+        if (first_time_slot < 0)
+            first_time_slot = 0;
 
 	while( first_time_slot < _n_values-1 && slot_time(first_time_slot) < when ) {
 	   first_time_slot++;
@@ -618,7 +621,7 @@ main() {
   bf.set_epsilon(.125);
 
   try {
-    double tlist[] = {1393590647.947098,1393590649.614813,1393590651.281534,1393590652.949176};
+    double tlist[] = {1386058021.613409,1386058023.279863,1386058079.149919,1386058080.816768};
     for (int i = 0; i < 4 ; i++) {
        bf.GetNamedData(tlist[i],"E:TRTGTD@",&trtgtd,&t1);
        std::cout << "got values " << trtgtd <<  "for E:TRTGTD at time " << t1 << "\n";
