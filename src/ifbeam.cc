@@ -8,12 +8,12 @@
 #include <string.h>
 #include <errno.h>
 #include "ifbeam.h"
-#include "../util/utils.h"
-#include "../util/WebAPI.h"
+#include <utils.h>
+#include <WebAPI.h>
 #include <math.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../util/ifdh_version.h"
+#include <ifdh_version.h>
 
 namespace ifbeam_ns {
 
@@ -598,7 +598,6 @@ main() {
     double  nodatatime = 1373970148.000000;
     double ehmgpr, em121ds0, em121ds5, trtgtd;
     double t1, t2;
-    WebAPI::_debug = 1;
     BeamFolder::_debug = 1;
     std::string teststr("1321032116708,E:HMGPR,TORR,687.125");
 

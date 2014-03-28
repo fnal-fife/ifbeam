@@ -2,7 +2,7 @@ SRCDIR=../../util/
 VPATH=$(SRCDIR)
 LIB=libifbeam.a 
 SHLIB=libifbeam.so
-UTLOBJ=../util/*.o ../fife_wda/wda.o ../fife_wda/ifbeam.o
+OTHER_LIBS=-L$(LIBWDA_DIR)/lib -L$(IFDHC_LIB) -lifdh -lwda
 UTLSRC=../util/*.cc
 HDR=ifbeam.h ../util/*.h
 OBJ=ifbeam.o $(UTL)
@@ -10,7 +10,7 @@ SRC=ifbeam.cc
 TST=ifbeam-test
 #DEFS=-DOLD_CACHE
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda
+CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda -I$(LIBWDA_DIR)/include -I$(IFDHC_DIR)/inc
 
 VPATH=../../ifbeam
 
@@ -37,8 +37,9 @@ $(UTLOBJ):
 
 %-test: %.cc
 	g++ -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
-	g++ -o $@ $@.o $(ARCH)  $(UTLOBJ) -lcurl 
+	g++ -o $@ $@.o $(ARCH)  $(OTHER_LIBS) -lcurl 
 
 %.o: %.cc
 	g++ -c -o $@  $(CXXFLAGS) $< 
-ifbeam.o: ifbeam.cc ../util/WebAPI.h 
+
+ifbeam.o: ifbeam.cc

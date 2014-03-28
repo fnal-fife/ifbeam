@@ -2,13 +2,14 @@
 #define IFBEAM_H
 #include <string>
 #include <vector>
-#include "../util/WebAPI.h"
+#include <WebAPI.h>
 
 #ifndef OLD_CACHE
 #include "ifbeam_c.h"
 #endif
 
 namespace ifbeam_ns {
+
 
 class BeamFolder {
 protected:
