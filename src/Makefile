@@ -30,7 +30,7 @@ clean:
 
 $(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
-	ar qv $(LIB) $(OBJ) $(UTLOBJ)
+	ar qv $(LIB) $(SHLIB)  $(OBJ) $(UTLOBJ)
 
 $(SHLIB): $(OBJ) $(UTLOBJ)
 	g++ $(ARCH) --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) -lcurl 
