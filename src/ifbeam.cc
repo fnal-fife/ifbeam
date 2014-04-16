@@ -187,6 +187,11 @@ void
 BeamFolder::FillCache(double when) throw(WebAPIException) {
     int err = 0;
 
+    if (when >= _cache_start && when < _cache_end ) {
+        // we're already in the cache...
+        return;
+    }
+
     // round to standard windows...
     if (_time_width <= 600) 
         when = round_down_to_nearest((int)when,60);
@@ -198,10 +203,6 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     time_t t0 = (time_t) when;
     time_t t1 = (time_t) (when + _time_width);
 
-    if (when >= _cache_start && when < _cache_end ) {
-        // we're already in the cache...
-        return;
-    }
 
     if (_values) {
         releaseDataset(_values);
