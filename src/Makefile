@@ -19,7 +19,7 @@ install: install-lib install-headers
 
 install-lib:
 	test -d $(DESTDIR)/lib || mkdir $(DESTDIR)/lib
-	cp $(LIB) $(DESTDIR)/lib
+	cp $(LIB) $(SHLIB)  $(DESTDIR)/lib
 
 install-headers:
 	test -d $(DESTDIR)/include || mkdir -p $(DESTDIR)/include
@@ -30,7 +30,7 @@ clean:
 
 $(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
-	ar qv $(LIB) $(OBJ) $(UTLOBJ)
+	ar qv $(LIB)  $(OBJ) $(UTLOBJ)
 
 $(SHLIB): $(OBJ) $(UTLOBJ)
 	g++ $(ARCH) --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) -lcurl 
