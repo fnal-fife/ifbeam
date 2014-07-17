@@ -257,5 +257,5 @@ Action=Setup
     PathPrepend(LD_LIBRARY_PATH, ${UPS_PROD_DIR}${_fq_subdir}/lib)
     PathPrepend(PATH           , ${UPS_PROD_DIR}${_fq_subdir}/bin)
     ExeActionOptional(setupbuild)
-    SetupRequired(libwda v2_9_5)
+    SetupRequired(libwda v2_13_0)
 end:
