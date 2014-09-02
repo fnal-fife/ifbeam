@@ -26,7 +26,7 @@ install-headers:
 	cp $(HDR) $(DESTDIR)/include
 
 clean:
-	rm -f *.o *.a 
+	rm -f *.o *.a $(SHLIB)
 
 $(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
