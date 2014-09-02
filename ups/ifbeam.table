@@ -12,26 +12,28 @@ Qualifiers=""
   Qualifiers=e5:debug
 
   Flavor=ANY
-  Qualifiers=e4:debug
+  Qualifiers=e6:debug
 
   Flavor=ANY
   Qualifiers=e5:prof
 
   Flavor=ANY
-  Qualifiers=e4:prof
+  Qualifiers=e6:prof
 
   Flavor=Linux+2.6-2.12
   Qualifiers=e5:debug
     _fq_subdir=/Linux-2-6-2-12-e5-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
+       setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.5
   Qualifiers=e5:debug
     _fq_subdir=/Linux-2-6-2-5-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.12
@@ -39,6 +41,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-12-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.5
@@ -46,6 +49,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-5-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.12
@@ -53,6 +57,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-12-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.5
@@ -60,6 +65,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-5-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.12
@@ -67,6 +73,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-12-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.5
@@ -74,6 +81,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-5-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.12
@@ -81,6 +89,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-12-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.5
@@ -88,6 +97,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-5-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.12
@@ -95,6 +105,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-12-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.5
@@ -102,6 +113,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-5-e5-debug
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+debug )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.12
@@ -109,6 +121,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-12-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.5
@@ -116,6 +129,7 @@ Qualifiers=""
     _fq_subdir=/Linux-2-6-2-5-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.12
@@ -123,6 +137,7 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-12-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux64bit+2.6-2.5
@@ -130,119 +145,135 @@ Qualifiers=""
     _fq_subdir=/Linux64bit-2-6-2-5-e5-prof
 
     Action=setupbuild
+       setupRequired( ifdhc v1_4_3a -q +e5:+prof )
        setupRequired( gcc v4_8_2 )
 
   Flavor=Linux+2.6-2.12
-  Qualifiers=e4:debug
-    _fq_subdir=/Linux-2-6-2-12-e4-debug
+  Qualifiers=e6:debug
+    _fq_subdir=/Linux-2-6-2-12-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.5
-  Qualifiers=e4:debug
-    _fq_subdir=/Linux-2-6-2-5-e4-debug
+  Qualifiers=e6:debug
+    _fq_subdir=/Linux-2-6-2-5-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.12
-  Qualifiers=e4:debug
-    _fq_subdir=/Linux64bit-2-6-2-12-e4-debug
+  Qualifiers=e6:debug
+    _fq_subdir=/Linux64bit-2-6-2-12-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.5
-  Qualifiers=e4:debug
-    _fq_subdir=/Linux64bit-2-6-2-5-e4-debug
+  Qualifiers=e6:debug
+    _fq_subdir=/Linux64bit-2-6-2-5-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.12
-  Qualifiers=e4:prof
-    _fq_subdir=/Linux-2-6-2-12-e4-prof
+  Qualifiers=e6:prof
+    _fq_subdir=/Linux-2-6-2-12-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.5
-  Qualifiers=e4:prof
-    _fq_subdir=/Linux-2-6-2-5-e4-prof
+  Qualifiers=e6:prof
+    _fq_subdir=/Linux-2-6-2-5-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.12
-  Qualifiers=e4:prof
-    _fq_subdir=/Linux64bit-2-6-2-12-e4-prof
+  Qualifiers=e6:prof
+    _fq_subdir=/Linux64bit-2-6-2-12-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.5
-  Qualifiers=e4:prof
-    _fq_subdir=/Linux64bit-2-6-2-5-e4-prof
+  Qualifiers=e6:prof
+    _fq_subdir=/Linux64bit-2-6-2-5-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.12
-  Qualifiers=e4:debug:nu
-    _fq_subdir=/Linux-2-6-2-12-e4-debug
+  Qualifiers=e6:debug:nu
+    _fq_subdir=/Linux-2-6-2-12-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.5
-  Qualifiers=e4:debug:nu
-    _fq_subdir=/Linux-2-6-2-5-e4-debug
+  Qualifiers=e6:debug:nu
+    _fq_subdir=/Linux-2-6-2-5-e6-debug
 
     Action=setupbuild
-      setupRequired( gcc v4_8_1 )
+      setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.12
-  Qualifiers=e4:debug:nu
-    _fq_subdir=/Linux64bit-2-6-2-12-e4-debug
+  Qualifiers=e6:debug:nu
+    _fq_subdir=/Linux64bit-2-6-2-12-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.5
-  Qualifiers=e4:debug:nu
-    _fq_subdir=/Linux64bit-2-6-2-5-e4-debug
+  Qualifiers=e6:debug:nu
+    _fq_subdir=/Linux64bit-2-6-2-5-e6-debug
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+debug )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.12
-  Qualifiers=e4:prof:nu
-    _fq_subdir=/Linux-2-6-2-12-e4-prof
+  Qualifiers=e6:prof:nu
+    _fq_subdir=/Linux-2-6-2-12-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux+2.6-2.5
-  Qualifiers=e4:prof:nu
-    _fq_subdir=/Linux-2-6-2-5-e4-prof
+  Qualifiers=e6:prof:nu
+    _fq_subdir=/Linux-2-6-2-5-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.12
-  Qualifiers=e4:prof:nu
-    _fq_subdir=/Linux64bit-2-6-2-12-e4-prof
+  Qualifiers=e6:prof:nu
+    _fq_subdir=/Linux64bit-2-6-2-12-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
   Flavor=Linux64bit+2.6-2.5
-  Qualifiers=e4:prof:nu
-    _fq_subdir=/Linux64bit-2-6-2-5-e4-prof
+  Qualifiers=e6:prof:nu
+    _fq_subdir=/Linux64bit-2-6-2-5-e6-prof
 
     Action=setupbuild
-       setupRequired( gcc v4_8_1 )
+       setupRequired( ifdhc v1_4_3a -q +e6:+prof )
+       setupRequired( gcc v4_9_1 )
 
 common:
 
@@ -257,5 +288,5 @@ Action=Setup
     PathPrepend(LD_LIBRARY_PATH, ${UPS_PROD_DIR}${_fq_subdir}/lib)
     PathPrepend(PATH           , ${UPS_PROD_DIR}${_fq_subdir}/bin)
     ExeActionOptional(setupbuild)
-    SetupRequired(libwda v2_13_0a)
+    SetupRequired(libwda v2_20_1)
 end:
