@@ -1,28 +1,156 @@
 FILE=Table
 Product=ifbeam
 
-# This is the basic table file
-# It builds with the native gcc
-# Any builds against the gcc associated with art are handled by a different table file.
+# p278 -> python v2_7_8 (e7 e6 e5)
+# p276 -> python v2_7_6 (e5)
 
 group:
+
 Flavor=ANY
 Qualifiers=""
- _fq_subdir=
 
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR} )
+
+  Action = ExtraSetup
+    ##setupRequired( ifdhc v1_7_2 )
+
+Flavor=ANY
+Qualifiers=p278:e7:debug
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-debug )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+debug )
+    setupRequired( gcc v4_9_2 )
+
+Flavor=ANY
+Qualifiers=p278:e7:opt
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-opt )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+opt )
+    setupRequired( gcc v4_9_2 )
+
+Flavor=ANY
+Qualifiers=p278:e7:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+prof )
+    setupRequired( gcc v4_9_2 )
+
+
+Flavor=ANY
+Qualifiers=p278:e6:debug
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-debug )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+debug )
+    setupRequired( gcc v4_9_1 )
+
+Flavor=ANY
+Qualifiers=p278:e6:opt
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-opt )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+opt )
+    setupRequired( gcc v4_9_1 )
+
+Flavor=ANY
+Qualifiers=p278:e6:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+prof )
+    setupRequired( gcc v4_9_1 )
+
+Flavor=ANY
+Qualifiers=p278:e5:debug
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-debug )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+debug )
+    setupRequired( gcc v4_8_2 )
+
+Flavor=ANY
+Qualifiers=p278:e5:opt
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-opt )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+opt )
+    setupRequired( gcc v4_8_2 )
+
+Flavor=ANY
+Qualifiers=p278:e5:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+prof )
+    setupRequired( gcc v4_8_2 )
+
+Flavor=ANY
+Qualifiers=p276:e5:debug
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-debug )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+debug )
+    setupRequired( gcc v4_8_2 )
+
+Flavor=ANY
+Qualifiers=p276:e5:opt
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-opt )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+opt )
+    setupRequired( gcc v4_8_2 )
+
+Flavor=ANY
+Qualifiers=p276:e5:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+prof )
+    setupRequired( gcc v4_8_2 )
 
 common:
 
-
 Action=Setup
     SetupEnv()
-    EnvSet(SETUP_IFBEAM, $SETUP_IFBEAM)
-    EnvSet(IFBEAM_DIR,     ${UPS_PROD_DIR})
+    proddir()
     EnvSet(IFBEAM_VERSION, ${UPS_PROD_VERSION} )
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}${_fq_subdir})
-    EnvSet(IFBEAM_LIB,     ${UPS_PROD_DIR}${_fq_subdir}/lib)
-    PathPrepend(LD_LIBRARY_PATH, ${UPS_PROD_DIR}${_fq_subdir}/lib)
-    PathPrepend(PATH           , ${UPS_PROD_DIR}${_fq_subdir}/bin)
-    ExeActionOptional(setupbuild)
+    ExeActionRequired(DefineFQ)
+    EnvSet(IFBEAM_LIB,     ${IFBEAM_FQ_DIR}/lib)
+    if ( test `uname` = "Darwin" )
+      envPrepend(DYLD_LIBRARY_PATH, ${IFBEAM_FQ_DIR}/lib)
+    else()
+      envPrepend(LD_LIBRARY_PATH, ${IFBEAM_FQ_DIR}/lib)
+    endif ( test `uname` = "Darwin" )
+    # requirements
+    exeActionRequired(ExtraSetup)
     SetupRequired(libwda v2_20_1)
+
 end:
