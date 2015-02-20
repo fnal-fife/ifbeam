@@ -17,25 +17,44 @@ Qualifiers=""
     ##setupRequired( ifdhc v1_7_2 )
 
 Flavor=ANY
-Qualifiers=p278:e7:debug
+Qualifiers=p279:e7:debug
 
   Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-debug )
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e7-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+debug )
+    setupRequired( ifdhc v1_7_2 -q +p279:+e7:+debug )
     setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
-Qualifiers=p278:e7:prof
+Qualifiers=p279:e7:prof
 
   Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-prof )
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e7-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+prof )
+    setupRequired( ifdhc v1_7_2 -q +p279:+e7:+prof )
     setupRequired( gcc v4_9_2 )
 
+Flavor=ANY
+Qualifiers=p279:e6:debug
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e6-debug )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p279:+e6:+debug )
+    setupRequired( gcc v4_9_2 )
+
+Flavor=ANY
+Qualifiers=p279:e6:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e6-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_2 -q +p279:+e6:+prof )
+    setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
 Qualifiers=p278:e6:debug
