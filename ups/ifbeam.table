@@ -151,6 +151,6 @@ Action=Setup
     endif ( test `uname` = "Darwin" )
     # requirements
     exeActionRequired(ExtraSetup)
-    SetupRequired(libwda v2_20_1)
+    SetupRequired(libwda)
 
 end:
