@@ -3,6 +3,7 @@ CXXFLAGS= \
   -I$(IFBEAM_FQ_DIR)/include \
   -I$(LIBWDA_FQ_DIR)/include \
   -I$(IFDHC_FQ_DIR)/inc 
+CFLAGS= $(CXXFLAGS)
 
 LDFLAGS= \
   -L$(IFBEAM_LIB) \

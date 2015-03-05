@@ -59,6 +59,8 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _values = 0;
     _cur_row = 0;
     _cur_row_num = -1;
+    _throw_on_empty = true;
+    _values_column = -1;
 
     // pass info about us down for UserAgent: string
     std::stringstream uabuf;
@@ -144,7 +146,7 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     if ( s.data().fail() && !s.data().eof() ) {
         throw(WebAPIException("ios.h fail()  error reading data from server",""));
     }
-    if (_n_values == 0) {
+    if (_n_values == 0 && _throw_on_empty) {
         throw(WebAPIException("No data values returned from server for URL: ",varurl.str()));
     }
     _cache_start = when;
@@ -206,6 +208,13 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
 
     if (_values) {
         releaseDataset(_values);
+        _values = 0;
+    }
+
+    if (_cur_row) {
+       releaseTuple(_cur_row);
+       _cur_row = 0;
+       _cur_row_num = -1;
     }
 
 
@@ -227,7 +236,7 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     _cache_end = when + _time_width;
     _n_values = getNtuples(_values) - 1;
 
-    if (_n_values <= 0 ) {
+    if (_n_values <= 0 && _throw_on_empty ) {
          std::stringstream tbuf; 
          tbuf << std::setw(9) << when << " url: " <<  _url;
          throw(WebAPIException("No ifbeam data available for this time: ", tbuf.str() ));
@@ -235,16 +244,18 @@ BeamFolder::FillCache(double when) throw(WebAPIException) {
     
     // look for a values column, default to 3
     
-    _values_column = 3;
+    if (_values_column == -1 ) {
+	_values_column = 3;
 
-    static char buf[512];
-    Tuple t = cachedGetTuple(0);
-    for (int i = 0; i < 10; i++ ) {
-        getStringValue(t,i,buf,512,&err);
-        if (0 == strncmp(buf,"value",5)) {
-            _values_column = i;
-            break;
-        }
+	static char buf[512];
+	Tuple t = cachedGetTuple(0);
+	for (int i = 0; i < 10; i++ ) {
+	    getStringValue(t,i,buf,512,&err);
+	    if (0 == strncmp(buf,"value",5)) {
+		_values_column = i;
+		break;
+	    }
+	}
     }
 }
 
@@ -417,7 +428,6 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
          throw(WebAPIException(curvar, "No data found at this time"));
     }
 
-
     find_first(first_time_slot, first_time, when);
 
     _debug && std::cout << "after scans, first_time_slot is : " 
@@ -559,18 +569,34 @@ BeamFolder::GetDeviceList() {
 }
 
 
-BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) :
+BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) throw(WebAPIException) :
    BeamFolder(bundle) , cur_slot(0) {
+   _throw_on_empty = false;
    FillCache(start_time);
 }
 
+
+void
+BeamFolderScanner::find_data_later_than(double when) throw(WebAPIException) {
+    bool found = false;
+    while( when < double(time(0)) && !found ) {
+        when += _time_width/2.0;
+        FillCache(when);
+        found = _n_values > 0;
+    }
+}
+
+
 int
-BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<double> &values) {
+BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<double> &values) throw(WebAPIException) {
    static char buf[512];
    int err;
 
    if (cur_slot >= _n_values) {
       FillCache(_cache_end + .001);
+      if (_n_values == 0) {
+	 find_data_later_than(_cache_end);
+      }
       cur_slot = 0;
    }
    if (cur_slot >= _n_values) {

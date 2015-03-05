@@ -17,6 +17,7 @@ protected:
     double _time_width;
     std::string _bundle_name;
     std::string _url;
+    bool _throw_on_empty;
 
 
     // cached info from fetches
@@ -80,8 +81,9 @@ class BeamFolderScanner : public BeamFolder {
 private: 
     int cur_slot;
 public:
-    BeamFolderScanner(std::string bundle, double start_time);
-    int NextDataRow(double &time, std::string &name, std::vector<double> &values);
+    BeamFolderScanner(std::string bundle, double start_time) throw(WebAPIException);
+    void find_data_later_than(double when) throw(WebAPIException);
+    int NextDataRow(double &time, std::string &name, std::vector<double> &values)throw(WebAPIException);
 };
 
 }
