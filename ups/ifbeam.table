@@ -1,7 +1,8 @@
 FILE=Table
 Product=ifbeam
 
-# p278 -> python v2_7_8 (e7 e6 e5)
+# p279 -> python v2_7_9 (e6 e7)
+# p278 -> python v2_7_8 (e6 e5)
 # p276 -> python v2_7_6 (e5)
 
 group:
@@ -13,38 +14,47 @@ Qualifiers=""
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR} )
 
   Action = ExtraSetup
-    ##setupRequired( ifdhc v1_7_2 )
+    ##setupRequired( ifdhc v1_7_3 )
 
 Flavor=ANY
-Qualifiers=p278:e7:debug
+Qualifiers=p279:e7:debug
 
   Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-debug )
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e7-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+debug )
+    setupRequired( ifdhc v1_7_3 -q +p279:+e7:+debug )
     setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
-Qualifiers=p278:e7:opt
+Qualifiers=p279:e7:prof
 
   Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-opt )
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e7-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+opt )
+    setupRequired( ifdhc v1_7_3 -q +p279:+e7:+prof )
     setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
-Qualifiers=p278:e7:prof
+Qualifiers=p279:e6:debug
 
   Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e7-prof )
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e6-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e7:+prof )
-    setupRequired( gcc v4_9_2 )
+    setupRequired( ifdhc v1_7_3 -q +p279:+e6:+debug )
+    setupRequired( gcc v4_9_1 )
 
+Flavor=ANY
+Qualifiers=p279:e6:prof
+
+  Action=DefineFQ
+    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p279-e6-prof )
+
+  Action = ExtraSetup
+    setupRequired( ifdhc v1_7_3 -q +p279:+e6:+prof )
+    setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
 Qualifiers=p278:e6:debug
@@ -53,17 +63,7 @@ Qualifiers=p278:e6:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+debug )
-    setupRequired( gcc v4_9_1 )
-
-Flavor=ANY
-Qualifiers=p278:e6:opt
-
-  Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-opt )
-
-  Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+opt )
+    setupRequired( ifdhc v1_7_3 -q +p278:+e6:+debug )
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -73,7 +73,7 @@ Qualifiers=p278:e6:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e6-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e6:+prof )
+    setupRequired( ifdhc v1_7_3 -q +p278:+e6:+prof )
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -83,17 +83,7 @@ Qualifiers=p278:e5:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+debug )
-    setupRequired( gcc v4_8_2 )
-
-Flavor=ANY
-Qualifiers=p278:e5:opt
-
-  Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-opt )
-
-  Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+opt )
+    setupRequired( ifdhc v1_7_3 -q +p278:+e5:+debug )
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -103,7 +93,7 @@ Qualifiers=p278:e5:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p278-e5-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p278:+e5:+prof )
+    setupRequired( ifdhc v1_7_3 -q +p278:+e5:+prof )
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -113,17 +103,7 @@ Qualifiers=p276:e5:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+debug )
-    setupRequired( gcc v4_8_2 )
-
-Flavor=ANY
-Qualifiers=p276:e5:opt
-
-  Action=DefineFQ
-    EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-opt )
-
-  Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+opt )
+    setupRequired( ifdhc v1_7_3 -q +p276:+e5:+debug )
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -133,7 +113,7 @@ Qualifiers=p276:e5:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-p276-e5-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_7_2 -q +p276:+e5:+prof )
+    setupRequired( ifdhc v1_7_3 -q +p276:+e5:+prof )
     setupRequired( gcc v4_8_2 )
 
 common:
