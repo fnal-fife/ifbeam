@@ -25,7 +25,7 @@ Qualifiers=p279:e7:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p279:+e7:+debug )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
@@ -36,7 +36,7 @@ Qualifiers=p279:e7:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p279:+e7:+prof )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_2 )
 
 Flavor=ANY
@@ -47,7 +47,7 @@ Qualifiers=p279:e6:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p279:+e6:+debug )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -58,7 +58,7 @@ Qualifiers=p279:e6:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p279:+e6:+prof )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -69,7 +69,7 @@ Qualifiers=p278:e6:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p278:+e6:+debug )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -80,7 +80,7 @@ Qualifiers=p278:e6:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p278:+e6:+prof )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_9_1 )
 
 Flavor=ANY
@@ -91,7 +91,7 @@ Qualifiers=p278:e5:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p278:+e5:+debug )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -102,7 +102,7 @@ Qualifiers=p278:e5:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p278:+e5:+prof )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -113,7 +113,7 @@ Qualifiers=p276:e5:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p276:+e5:+debug )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_8_2 )
 
 Flavor=ANY
@@ -124,7 +124,7 @@ Qualifiers=p276:e5:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v1_8_3 -q +p276:+e5:+prof )
-    SetupRequired(libwda v2_21_0a)
+    SetupRequired(libwda v2_21_1)
     setupRequired( gcc v4_8_2 )
 
 common:
