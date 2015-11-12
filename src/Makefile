@@ -1,6 +1,14 @@
+
+UNAME:= $(shell uname -s)
+ifeq ($(UNAME),Darwin)
+SHLIB=dylib
+else
+SHLIB=so 
+endif
+
 LIB=libifbeam.a 
-SHLIB=libifbeam.so
-OTHER_LIBS=-L$(LIBWDA_DIR)/lib -L$(IFDHC_LIB) -lifdh -lwda
+IFBLIB=libifbeam.$(SHLIB)
+OTHER_LIBS=-L$(LIBWDA_LIB) -L$(IFDHC_LIB) -lifdh -lwda
 UTLSRC=../util/*.cc
 HDR=ifbeam.h
 OBJ=ifbeam.o $(UTL)
@@ -8,32 +16,32 @@ SRC=ifbeam.cc
 TST=ifbeam-test
 #DEFS=-DOLD_CACHE
 TESTDEFS=-DUNITTEST
-CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I$(SRCDIR) -I../fife_wda -I../../fife_wda -I$(LIBWDA_DIR)/include -I$(IFDHC_DIR)/inc
+CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I. -I$(LIBWDA_FQ_DIR)/include -I$(IFDHC_FQ_DIR)/inc
 
 DESTDIR=..
 VPATH=../../src
 
-all: $(BIN) $(TST) $(LIB) $(SHLIB)
+all: $(BIN) $(TST) $(LIB) $(IFBLIB)
 
 install: install-lib install-headers
 
 install-lib:
 	test -d $(DESTDIR)/lib || mkdir $(DESTDIR)/lib
-	cp $(LIB) $(SHLIB)  $(DESTDIR)/lib
+	cp $(LIB) $(IFBLIB)  $(DESTDIR)/lib
 
 install-headers:
 	test -d $(DESTDIR)/include || mkdir -p $(DESTDIR)/include
 	cp $(HDR) $(DESTDIR)/include
 
 clean:
-	rm -f *.o *.a $(SHLIB)
+	rm -f *.o *.a $(IFBLIB)
 
 $(LIB): $(OBJ) $(UTLOBJ)
 	rm -f $(LIB)
 	ar qv $(LIB)  $(OBJ) $(UTLOBJ)
 
-$(SHLIB): $(OBJ) $(UTLOBJ)
-	g++ $(ARCH) --shared -o $(SHLIB) $(OBJ) $(UTLOBJ) -lcurl 
+$(IFBLIB): $(OBJ) $(UTLOBJ)
+	g++ $(ARCH) --shared -o $(IFBLIB) $(OBJ) $(UTLOBJ) $(OTHER_LIBS) -lcurl 
 
 $(UTLOBJ):
 	cd ../util; make
