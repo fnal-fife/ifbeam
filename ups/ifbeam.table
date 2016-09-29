@@ -14,7 +14,7 @@ Qualifiers=""
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR} )
 
   Action = ExtraSetup
-    ##setupRequired( ifdhc v1_8_11 )
+    ##setupRequired( ifdhc b2_0_03 )
     SetupRequired(libwda)
 
 Flavor=ANY
@@ -24,7 +24,7 @@ Qualifiers=e10:p2711:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e10-p2711-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2711:+e10:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p2711:+e10:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3a )
 
@@ -35,7 +35,7 @@ Qualifiers=e10:p2711:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e10-p2711-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2711:+e10:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p2711:+e10:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3a )
 
@@ -46,7 +46,7 @@ Qualifiers=e10:p2710:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e10-p2710-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e10:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e10:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3a )
 
@@ -57,7 +57,7 @@ Qualifiers=e10:p2710:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e10-p2710-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e10:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e10:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3a )
 
@@ -69,7 +69,7 @@ Qualifiers=e9:p2711:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e9-p2711-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2711:+e9:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p2711:+e9:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3 )
 
@@ -80,7 +80,7 @@ Qualifiers=e9:p2711:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e9-p2711-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2711:+e9:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p2711:+e9:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3 )
 
@@ -91,7 +91,7 @@ Qualifiers=e9:p2710:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e9-p2710-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e9:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e9:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3 )
 
@@ -102,7 +102,7 @@ Qualifiers=e9:p2710:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e9-p2710-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e9:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e9:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_3 )
 
@@ -113,7 +113,7 @@ Qualifiers=e7:p2710:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e7-p2710-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e7:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e7:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_2 )
 
@@ -124,7 +124,7 @@ Qualifiers=e7:p2710:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e7-p2710-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p2710:+e7:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p2710:+e7:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_2 )
 
@@ -135,7 +135,7 @@ Qualifiers=e7:p279:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e7-p279-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p279:+e7:+debug )
+    setupRequired( ifdhc b2_0_03 -q +p279:+e7:+debug )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_2 )
 
@@ -146,7 +146,7 @@ Qualifiers=e7:p279:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e7-p279-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v1_8_11 -q +p279:+e7:+prof )
+    setupRequired( ifdhc b2_0_03 -q +p279:+e7:+prof )
     SetupRequired(libwda v2_22_2)
     setupRequired( gcc v4_9_2 )
 
