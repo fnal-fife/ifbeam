@@ -26,7 +26,7 @@ Qualifiers=e14:p2713b:debug
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_3 -q +p2713b:+e14:+debug )
     SetupRequired(libwda v2_22_2)
-    setupRequired( gcc v4_9_3a )
+    setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
 Qualifiers=e14:p2713b:prof
@@ -37,7 +37,7 @@ Qualifiers=e14:p2713b:prof
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_3 -q +p2713b:+e14:+prof )
     SetupRequired(libwda v2_22_2)
-    setupRequired( gcc v4_9_3a )
+    setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
 Qualifiers=e10:p2713b:debug
