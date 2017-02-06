@@ -379,11 +379,12 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
         _debug && std::cout << "searching for var: " << curvar << "\n";
         _debug && std::cout << "checking slot: " << search_slot << " name: " << slot_var(search_slot) << "\n";
  
-        if (search_slot < _n_values-1)
+        if (search_slot < _n_values-1) {
             _debug && std::cout << "true?" 
 	    		    << time_eq(slot_time(search_slot+1),first_time) << "\n";
             _debug && std::cout << "true?" 
 			    << (slot_var(search_slot) < curvar)<<  "\n";
+         }
 
         while( search_slot < _n_values-1 && time_eq(slot_time(search_slot+1),first_time) && slot_var(search_slot) != curvar  )  {
 
