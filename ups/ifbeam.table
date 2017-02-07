@@ -165,5 +165,8 @@ Action=Setup
     endif ( test `uname` = "Darwin" )
     # requirements
     exeActionRequired(ExtraSetup)
+    # useful variables
+    envPrepend(CMAKE_PREFIX_PATH, ${IFBEAM_FQ_DIR} )
+    envPrepend(PKG_CONFIG_PATH, ${IFBEAM_FQ_DIR} )
 
 end:
