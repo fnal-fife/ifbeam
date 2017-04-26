@@ -26,7 +26,7 @@ Qualifiers=e14:p2713d:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713d:+e14:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
@@ -37,7 +37,7 @@ Qualifiers=e14:p2713d:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713d:+e14:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
@@ -48,7 +48,7 @@ Qualifiers=e10:p2713d:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713d:+e10:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -59,7 +59,7 @@ Qualifiers=e10:p2713d:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713d:+e10:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -70,7 +70,7 @@ Qualifiers=e14:p2713b:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713b:+e14:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
@@ -81,7 +81,7 @@ Qualifiers=e14:p2713b:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713b:+e14:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v6_3_0 )
 
 Flavor=ANY
@@ -92,7 +92,7 @@ Qualifiers=e10:p2713b:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713b:+e10:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -103,7 +103,7 @@ Qualifiers=e10:p2713b:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2713b:+e10:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -114,7 +114,7 @@ Qualifiers=e10:p2711:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2711:+e10:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -125,7 +125,7 @@ Qualifiers=e10:p2711:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2711:+e10:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -136,7 +136,7 @@ Qualifiers=e10:p2710:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2710:+e10:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 Flavor=ANY
@@ -147,7 +147,7 @@ Qualifiers=e10:p2710:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2710:+e10:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3a )
 
 
@@ -159,7 +159,7 @@ Qualifiers=e9:p2711:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2711:+e9:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3 )
 
 Flavor=ANY
@@ -170,7 +170,7 @@ Qualifiers=e9:p2711:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2711:+e9:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3 )
 
 Flavor=ANY
@@ -181,7 +181,7 @@ Qualifiers=e9:p2710:debug
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2710:+e9:+debug )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3 )
 
 Flavor=ANY
@@ -192,7 +192,7 @@ Qualifiers=e9:p2710:prof
 
   Action = ExtraSetup
     setupRequired( ifdhc v2_0_5 -q +p2710:+e9:+prof )
-    SetupRequired(libwda v2_22_2)
+    SetupRequired(libwda v2_23_0)
     setupRequired( gcc v4_9_3 )
 
 common:
