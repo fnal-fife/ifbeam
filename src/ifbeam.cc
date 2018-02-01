@@ -95,7 +95,7 @@ BeamFolder::getValidWindow() {
 
 #ifdef OLD_CACHE
 void
-BeamFolder::FillCache(double when) throw(WebAPIException) {
+BeamFolder::FillCache(double when) {
     std::vector<std::string>::iterator it;
     std::string st;
 
@@ -186,7 +186,7 @@ BeamFolder::slot_value(int n, int j) {
 #else
 
 void
-BeamFolder::FillCache(double when) throw(WebAPIException) {
+BeamFolder::FillCache(double when) {
     int err = 0;
 
     if (when >= _cache_start && when < _cache_end ) {
@@ -405,7 +405,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
 			<< "data: " << "\n";
 }
 void
-BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(WebAPIException) {
+BeamFolder::GetNamedData(double when, std::string variable_list, ...)  {
     std::vector<std::string> variables, values;
     std::vector<std::string>::iterator rvit, it;
     std::string curvar;
@@ -490,7 +490,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  throw(Web
 }
 
 std::vector<double> 
-BeamFolder::GetNamedVector(double when, std::string variable_name, double *actual_time ) throw (WebAPIException) {
+BeamFolder::GetNamedVector(double when, std::string variable_name, double *actual_time ) {
     double first_time;
     int first_time_slot;
     int search_slot;
@@ -570,7 +570,7 @@ BeamFolder::GetDeviceList() {
 }
 
 
-BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) throw(WebAPIException) :
+BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) :
    BeamFolder(bundle) , cur_slot(0) {
    _throw_on_empty = false;
    FillCache(start_time);
@@ -578,7 +578,7 @@ BeamFolderScanner::BeamFolderScanner(std::string bundle, double start_time) thro
 
 
 void
-BeamFolderScanner::find_data_later_than(double when) throw(WebAPIException) {
+BeamFolderScanner::find_data_later_than(double when) {
     bool found = false;
     while( when < double(time(0)) && !found ) {
         when += _time_width/2.0;
@@ -589,7 +589,7 @@ BeamFolderScanner::find_data_later_than(double when) throw(WebAPIException) {
 
 
 int
-BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<double> &values) throw(WebAPIException) {
+BeamFolderScanner::NextDataRow(double &time, std::string &name, std::vector<double> &values) {
    static char buf[512];
    int err;
 

@@ -63,10 +63,10 @@ public:
     BeamFolder(std::string bundle_name, std::string url = "", double time_width = 1200.0);
     ~BeamFolder();
 
-    void FillCache(double time) throw(WebAPIException);
+    void FillCache(double time) ; // throw(WebAPIException);
     // accessors
-    void GetNamedData(double from_time, std::string variable_list, ... ) throw(WebAPIException);
-    std::vector<double> GetNamedVector(double when,  std::string variable_name, double *actual_time = 0) throw(WebAPIException);
+    void GetNamedData(double from_time, std::string variable_list, ... ) ; // throw(WebAPIException);
+    std::vector<double> GetNamedVector(double when,  std::string variable_name, double *actual_time = 0) ; // throw(WebAPIException);
 
     // info about what is in cache...
     double GetCacheStartTime(){ return _cache_start; };
@@ -81,9 +81,9 @@ class BeamFolderScanner : public BeamFolder {
 private: 
     int cur_slot;
 public:
-    BeamFolderScanner(std::string bundle, double start_time) throw(WebAPIException);
-    void find_data_later_than(double when) throw(WebAPIException);
-    int NextDataRow(double &time, std::string &name, std::vector<double> &values)throw(WebAPIException);
+    BeamFolderScanner(std::string bundle, double start_time) ; // throw(WebAPIException);
+    void find_data_later_than(double when) ; // throw(WebAPIException);
+    int NextDataRow(double &time, std::string &name, std::vector<double> &values); // throw(WebAPIException);
 };
 
 }
