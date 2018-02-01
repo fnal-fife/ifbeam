@@ -6,6 +6,9 @@ else
 SHLIB=so 
 endif
 
+# enable use of clang
+CXX ?= g++
+
 LIB=libifbeam.a 
 IFBLIB=libifbeam.$(SHLIB)
 OTHER_LIBS=-L$(LIBWDA_LIB) -L$(IFDHC_LIB) -lifdh -lwda
@@ -41,16 +44,16 @@ $(LIB): $(OBJ) $(UTLOBJ)
 	ar qv $(LIB)  $(OBJ) $(UTLOBJ)
 
 $(IFBLIB): $(OBJ) $(UTLOBJ)
-	g++ $(ARCH) --shared -o $(IFBLIB) $(OBJ) $(UTLOBJ) $(OTHER_LIBS) -lcurl 
+	${CXX} $(ARCH) --shared -o $(IFBLIB) $(OBJ) $(UTLOBJ) $(OTHER_LIBS) -lcurl 
 
 $(UTLOBJ):
 	cd ../util; make
 
 %-test: %.cc
-	g++ -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
-	g++ -o $@ $@.o $(ARCH)  $(OTHER_LIBS) -lcurl 
+	${CXX} -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
+	${CXX} -o $@ $@.o $(ARCH)  $(OTHER_LIBS) -lcurl 
 
 %.o: %.cc
-	g++ -c -o $@  $(CXXFLAGS) $< 
+	${CXX} -c -o $@  $(CXXFLAGS) $< 
 
 ifbeam.o: ifbeam.cc
