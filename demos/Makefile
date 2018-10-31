@@ -1,4 +1,7 @@
 
+# enable use of clang
+CXX ?= g++
+
 CXXFLAGS= \
   -I$(IFBEAM_FQ_DIR)/include \
   -I$(LIBWDA_FQ_DIR)/include \
@@ -12,4 +15,4 @@ LDFLAGS= \
   -lifbeam -lifdh -lwda -lcurl
 
 .c.o: 
-	g++ $* -o $< $(CXXFLAGS) $(LDFLAGS) 
+	${CXX} $* -o $< $(CXXFLAGS) $(LDFLAGS) 
