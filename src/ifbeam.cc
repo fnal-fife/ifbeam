@@ -356,14 +356,15 @@ BeamFolder::find_first(int &first_time_slot, double &first_time, double when) {
 				<< slot_time(first_time_slot) << "\n";
             first_time_slot = first_time_slot+1;
         }
+       
+        // find the start of the picked time
+	while( first_time_slot > 0 && time_eq(slot_time(first_time_slot-1),when) ) {
+	   first_time_slot--;
+	}
+
         first_time = slot_time(first_time_slot);
 
         _debug && std::cout << "picked reference time:" << first_time << "\n";
-       
-        // find the start of the picked time
-	while( first_time_slot > 0 && time_eq(slot_time(first_time_slot-1),first_time) ) {
-	   first_time_slot--;
-	}
 
         // chache this result
         _cache_slot = first_time_slot;
@@ -476,7 +477,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  {
         find_name(first_time_slot, first_time, search_slot, curvar);
         
 
-        if ( curvar == slot_var(search_slot)) {
+        if ( curvar == slot_var(search_slot) && time_eq(when, slot_time(search_slot))) {
            std::vector <std::string> vallist;
            
            *curdest = slot_value(search_slot,array_slot);
@@ -484,6 +485,7 @@ BeamFolder::GetNamedData(double when, std::string variable_list, ...)  {
                *timedest = slot_time(search_slot);
            }
         } else {
+            _debug && std::cout << "when: "  << when << " first_time: " << first_time << "slot time: " << slot_time(search_slot) << " name: " << slot_var(search_slot) << "\n";
             throw(WebAPIException(curvar, "-- variable not found"));
         }
     }
@@ -508,13 +510,14 @@ BeamFolder::GetNamedVector(double when, std::string variable_name, double *actua
     find_first(first_time_slot, first_time, when);
     find_name(first_time_slot, first_time, search_slot, variable_name);
 
-    if ( variable_name != slot_var(search_slot)) {
-        throw(WebAPIException(variable_name, "-- variable not found"));
-    }
-
     if ( fabs(slot_time(search_slot) - when) > _valid_window ) {
         throw(WebAPIException(variable_name, "-- only stale data found"));
     }
+
+    if ( variable_name != slot_var(search_slot) || !time_eq(slot_time(search_slot),when)) {
+        throw(WebAPIException(variable_name, "-- variable not found"));
+    }
+
 
     if (actual_time != 0) {
        *actual_time = slot_time(search_slot);
@@ -651,12 +654,12 @@ main() {
 
   std::cout << "Trying the default location\n";
   BeamFolder bf("NuMI_Physics_A9");
-  bf.set_epsilon(.125);
+  bf.set_epsilon(0.125);
 
   
   BeamFolder::_debug = 1;
   try {
-    double tlist[] = {1386058021.613409, 1386058023.279863,1386058079.149919,1386058080.816768};
+    double tlist[] = {1386058022.213409, 1386058023.9463,1386058079.89,1386058081.416768};
     for (int i = 0; i < 4 ; i++) {
        bf.GetNamedData(tlist[i],"E:TRTGTD@",&trtgtd,&t1);
        std::cout << "got values " << trtgtd <<  "for E:TRTGTD at time " << t1 << "\n";
@@ -666,22 +669,22 @@ main() {
   }
   try {
     bf.GetNamedData(nodatatime2,"E:HP121@[1]",&ehmgpr,&t1);
-    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+    std::cout << "got UNEXPECTED values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
   } catch (WebAPIException &we) {
-       std::cout << "got exception:" << we.what() << "\n";
+       std::cout << "got EXPECTED exception:" << we.what() << "\n";
   }
   exit(0);
   try {
     bf.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
-    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+    std::cout << "got UNEXPECTED values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
   } catch (WebAPIException &we) {
-       std::cout << "got exception:" << we.what() << "\n";
+       std::cout << "got EXPECTED exception:" << we.what() << "\n";
   }
   try {
     bf.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
-    std::cout << "got values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
+    std::cout << "got Unexpected values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
   } catch (WebAPIException &we) {
-       std::cout << "got exception:" << we.what() << "\n";
+       std::cout << "got EXPECTED exception:" << we.what() << "\n";
   }
 
   try {
