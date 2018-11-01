@@ -673,7 +673,6 @@ main() {
   } catch (WebAPIException &we) {
        std::cout << "got EXPECTED exception:" << we.what() << "\n";
   }
-  exit(0);
   try {
     bf.GetNamedData(nodatatime,"E:HP121@[1]",&ehmgpr,&t1);
     std::cout << "got UNEXPECTED values " << ehmgpr <<  "for E:HP121[1]at time " << t1 << "\n";
