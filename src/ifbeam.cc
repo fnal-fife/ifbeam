@@ -19,8 +19,8 @@ namespace ifbeam_ns {
 
 int BeamFolder::_debug;
 
-static int
-round_down_to_nearest(int n, int modulus) {
+static long
+round_down_to_nearest(long n, int modulus) {
     if (n % modulus == 0) {
        return n;
     } else {
@@ -28,8 +28,8 @@ round_down_to_nearest(int n, int modulus) {
     }
 }
 
-static int
-round_up_to_nearest(int n, int modulus) {
+static long
+round_up_to_nearest(long n, int modulus) {
     if (n % modulus == 0) {
        return n;
     } else {
@@ -39,14 +39,6 @@ round_up_to_nearest(int n, int modulus) {
 
 
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
-    // round to "standardized" time_width for cacheability
-    if (time_width <= 600) {
-        time_width = round_up_to_nearest((int)time_width, 60);
-    } else if ( time_width <= 2700 ) {
-        time_width = round_up_to_nearest((int)time_width, 900);
-    } else {
-        time_width = round_up_to_nearest((int)time_width, 3600);
-    }
     _time_width = time_width;
     _bundle_name =  bundle_name;
     _url = url.length() > 0 ? url : "http://ifb-data.fnal.gov:8089/ifbeam";
@@ -98,20 +90,25 @@ void
 BeamFolder::FillCache(double when) {
     std::vector<std::string>::iterator it;
     std::string st;
+    int round_to;
+    time_t t0, t1;
 
     if (when >= _cache_start && when < _cache_end ) {
         // we're already in the cache...
         return;
     }
 
-    // round to standard windows...
-    if (_time_width <= 600) 
-        when = round_down_to_nearest((int)when,60);
-    else if (_time_width <= 2700)
-        when = round_down_to_nearest((int)when,900);
-    else 
-        when = round_down_to_nearest((int)when,3600);
-
+    // round to "standardized" time_width for cacheability
+    if (_time_width <= 600) {
+        round_to = 60;
+    } else if ( _time_width <= 2700 ) {
+        round_to = 900;
+    } else {
+        round_to = 3600;
+    }
+    t0 = round_down_to_nearest((long)when, round_to);
+    t1 = round_up_to_nearest((long)(when +  _time_width), round_to);
+    
     // cache is flushed...
     _values.clear();
     // we average 15 lines/second so preallocate some space
@@ -120,12 +117,11 @@ BeamFolder::FillCache(double when) {
     _cache_slot = -1;
 
     std::stringstream varurl;
-    
     varurl << _url << "/data/data" 
            << "?b=" << _bundle_name
            << std::setiosflags(std::ios::fixed) 
-           << "&t0=" << when
-           << "&t1=" << when + _time_width;
+           << "&t0=" << t0
+           << "&t1=" << t1;
 
     _debug && std::cout << "fetching url: " << varurl.str() << "\n";
 
@@ -149,8 +145,8 @@ BeamFolder::FillCache(double when) {
     if (_n_values == 0 && _throw_on_empty) {
         throw(WebAPIException("No data values returned from server for URL: ",varurl.str()));
     }
-    _cache_start = when;
-    _cache_end = when + _time_width;
+    _cache_start = t0;
+    _cache_end = t1;
 }
 
 double 
@@ -188,22 +184,24 @@ BeamFolder::slot_value(int n, int j) {
 void
 BeamFolder::FillCache(double when) {
     int err = 0;
+    int round_to;
+    time_t t0, t1;
 
     if (when >= _cache_start && when < _cache_end ) {
         // we're already in the cache...
         return;
     }
 
-    // round to standard windows...
-    if (_time_width <= 600) 
-        when = round_down_to_nearest((int)when,60);
-    else if (_time_width <= 2700)
-        when = round_down_to_nearest((int)when,900);
-    else 
-        when = round_down_to_nearest((int)when,3600);
-
-    time_t t0 = (time_t) when;
-    time_t t1 = (time_t) (when + _time_width);
+    // round to "standardized" time_width for cacheability
+    if ( _time_width <= 600 ) {
+        round_to = 60;
+    } else if ( _time_width <= 2700 ) {
+        round_to = 900;
+    } else {
+        round_to = 3600;
+    }
+    t0 = round_down_to_nearest((long)when, round_to);
+    t1 = round_up_to_nearest((long)(when +  _time_width), round_to);
 
 
     if (_values) {
