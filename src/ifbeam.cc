@@ -529,7 +529,7 @@ BeamFolder::GetNamedVector(double when, std::string variable_name, double *actua
        try {
            value = slot_value(search_slot, i);   
            res.push_back(value);
-       } catch (WebAPIException ) {
+       } catch (WebAPIException e) {
            ok = false;
            break;
        }
