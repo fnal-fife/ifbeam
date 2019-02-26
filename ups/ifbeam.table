@@ -26,7 +26,7 @@ Qualifiers=c7:p372:debug
   Action = ExtraSetup
     setupRequired( ifdhc v2_4_1 -q +p372:+c7:+debug )
     SetupRequired(libwda v2_26_0)
-    setupRequired( clang v5_0_1 )
+    setupRequired( clang v7_0_0 )
 
 Flavor=ANY
 Qualifiers=c7:p372:prof
@@ -37,7 +37,7 @@ Qualifiers=c7:p372:prof
   Action = ExtraSetup
     setupRequired( ifdhc v2_4_1 -q +p372:+c7:+prof )
     SetupRequired(libwda v2_26_0)
-    setupRequired( clang v5_0_1 )
+    setupRequired( clang v7_0_0 )
 
 Flavor=ANY
 Qualifiers=c2:p372:debug
@@ -70,7 +70,7 @@ Qualifiers=c7:p2715a:debug
   Action = ExtraSetup
     setupRequired( ifdhc v2_4_1 -q +p2715a:+c7:+debug )
     SetupRequired(libwda v2_26_0)
-    setupRequired( clang v5_0_1 )
+    setupRequired( clang v7_0_0 )
 
 Flavor=ANY
 Qualifiers=c7:p2715a:prof
@@ -81,7 +81,7 @@ Qualifiers=c7:p2715a:prof
   Action = ExtraSetup
     setupRequired( ifdhc v2_4_1 -q +p2715a:+c7:+prof )
     SetupRequired(libwda v2_26_0)
-    setupRequired( clang v5_0_1 )
+    setupRequired( clang v7_0_0 )
 
 Flavor=ANY
 Qualifiers=c2:p2715a:debug
