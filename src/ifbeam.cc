@@ -406,7 +406,7 @@ BeamFolder::find_name(int &first_time_slot, double &first_time, int &search_slot
 void
 BeamFolder::GetNamedData(double when, std::string variable_list, ...)  {
     std::vector<std::string> variables, values;
-    std::vector<std::string>::iterator rvit, it;
+    std::vector<std::string>::iterator rvit;
     std::string curvar;
     double *curdest;
     double *timedest = 0;
