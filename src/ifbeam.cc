@@ -638,6 +638,25 @@ main() {
 
     std::cout << std::setiosflags(std::ios::fixed);
  
+    //  INC000001045621 specific data test
+    //
+    double ticket_t1 = 1553432986.232244730;
+    double ticket_t2 = 1549114397.957554340;
+    double g_ea9snc;
+    double t_found;
+    BeamFolder ticket("A9_Monitoring");
+    ticket.set_epsilon(0.51);
+    try {
+        ticket.GetNamedData(ticket_t1,"G:EA9SNC@",&g_ea9snc, &t_found);
+        std::cout << "got values " << g_ea9snc <<  "for G:EA9SNC requested time " << ticket_t1 << " found time: " << t_found << "\n";
+        ticket.GetNamedData(ticket_t2,"G:EA9SNC@",&g_ea9snc, &t_found);
+        std::cout << "got values " << g_ea9snc <<  "for G:EA9SNC requested time " << ticket_t2 << " found time: " << t_found << "\n";
+    } catch (WebAPIException &we) {
+       std::cout << "got exception:" << we.what() << "\n";
+    }
+
+    
+
   // test with someone who doesn't have any data, to check error timeouts
  // std::cout << "Trying a nonexistent location\n";
  // BeamFolder bfu("NuMI_Physics_A9","http://bel-kwinith.fnal.gov/");
