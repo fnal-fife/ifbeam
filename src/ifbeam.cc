@@ -41,7 +41,7 @@ round_up_to_nearest(long n, int modulus) {
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
     _time_width = time_width;
     _bundle_name =  bundle_name;
-    _url = url.length() > 0 ? url : "http://ifb-data.fnal.gov:8089/ifbeam";
+    _url = url.length() > 0 ? url : "https://ifb-data.fnal.gov:8104/ifbeam";
     _cache_start = 0.0;
     _cache_end = 0.0;
     _cache_slot = -1;
