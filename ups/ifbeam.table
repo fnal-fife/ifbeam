@@ -15,7 +15,7 @@ Qualifiers=""
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR} )
 
   Action = ExtraSetup
-    ##setupRequired( ifdhc v2_5_10 )
+    ##setupRequired( ifdhc v2_5_12 )
     SetupRequired(libwda)
 
 Flavor=ANY
@@ -25,8 +25,8 @@ Qualifiers=c7:p383b:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p383b-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+c7:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+c7:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -36,8 +36,8 @@ Qualifiers=c7:p383b:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p383b-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+c7:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+c7:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -47,8 +47,8 @@ Qualifiers=c7:p372:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p372-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+c7:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+c7:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -58,8 +58,8 @@ Qualifiers=c7:p372:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p372-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+c7:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+c7:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -69,8 +69,8 @@ Qualifiers=c2:p372:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p372-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+c2:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+c2:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -80,8 +80,8 @@ Qualifiers=c2:p372:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p372-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+c2:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+c2:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -91,8 +91,8 @@ Qualifiers=c7:p2715a:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p2715a-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+c7:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+c7:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -102,8 +102,8 @@ Qualifiers=c7:p2715a:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c7-p2715a-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+c7:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+c7:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v7_0_0 )
 
 Flavor=ANY
@@ -113,8 +113,8 @@ Qualifiers=c2:p2715a:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p2715a-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+c2:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+c2:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -124,8 +124,8 @@ Qualifiers=c2:p2715a:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p2715a-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+c2:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+c2:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -135,8 +135,8 @@ Qualifiers=c2:p2714b:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p2714b-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2714b:+c2:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2714b:+c2:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -146,8 +146,8 @@ Qualifiers=c2:p2714b:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-c2-p2714b-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2714b:+c2:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2714b:+c2:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( clang v5_0_1 )
 
 Flavor=ANY
@@ -157,8 +157,8 @@ Qualifiers=e20:p383b:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e20-p383b-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+e20:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+e20:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v9_3_0 )
 
 Flavor=ANY
@@ -168,8 +168,8 @@ Qualifiers=e20:p383b:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e20-p383b-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+e20:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+e20:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v9_3_0 )
 
 Flavor=ANY
@@ -179,8 +179,8 @@ Qualifiers=e19:p383b:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p383b-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+e19:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+e19:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -190,8 +190,8 @@ Qualifiers=e19:p383b:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p383b-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p383b:+e19:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p383b:+e19:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -201,8 +201,8 @@ Qualifiers=e19:p372:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p372-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+e19:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+e19:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -212,8 +212,8 @@ Qualifiers=e19:p372:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p372-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+e19:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+e19:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -223,8 +223,8 @@ Qualifiers=e17:p372:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p372-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+e17:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+e17:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 Flavor=ANY
@@ -234,8 +234,8 @@ Qualifiers=e17:p372:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p372-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p372:+e17:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p372:+e17:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 Flavor=ANY
@@ -245,8 +245,8 @@ Qualifiers=e19:p2715a:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p2715a-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+e19:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+e19:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -256,8 +256,8 @@ Qualifiers=e19:p2715a:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e19-p2715a-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+e19:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+e19:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v8_2_0 )
 
 Flavor=ANY
@@ -267,8 +267,8 @@ Qualifiers=e17:p2715a:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p2715a-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+e17:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+e17:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 Flavor=ANY
@@ -278,8 +278,8 @@ Qualifiers=e17:p2715a:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p2715a-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2715a:+e17:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2715a:+e17:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 Flavor=ANY
@@ -289,8 +289,8 @@ Qualifiers=e17:p2714b:debug
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p2714b-debug )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2714b:+e17:+debug )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2714b:+e17:+debug )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 Flavor=ANY
@@ -300,8 +300,8 @@ Qualifiers=e17:p2714b:prof
     EnvSet(IFBEAM_FQ_DIR , ${UPS_PROD_DIR}/${UPS_PROD_FLAVOR}-e17-p2714b-prof )
 
   Action = ExtraSetup
-    setupRequired( ifdhc v2_5_10 -q +p2714b:+e17:+prof )
-    SetupRequired(libwda v2_28_0)
+    setupRequired( ifdhc v2_5_12 -q +p2714b:+e17:+prof )
+    SetupRequired(libwda v2_29_1)
     setupRequired( gcc v7_3_0 )
 
 common:
