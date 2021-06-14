@@ -540,13 +540,15 @@ BeamFolder::GetNamedVector(double when, std::string variable_name, double *actua
  
 
 std::vector<double> 
-BeamFolder::GetTimeList() {
+BeamFolder::GetTimeList(std::string lookfor) {
    std::vector<double> res;
-   std::string lookfor;
 
+   // if we were not told what device to look for
    // happily assume first variable in first sample appears
    // in each sample, so find all the times for which  it appears
-   lookfor = slot_var(0);
+   if (lookfor == "") {
+       lookfor = slot_var(0);
+   }
    for(int i = 0; i < _n_values; i++) {
        if (lookfor == slot_var(i)) {
            res.push_back(slot_time(i));

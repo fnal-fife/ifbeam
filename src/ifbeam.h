@@ -71,7 +71,7 @@ public:
     // info about what is in cache...
     double GetCacheStartTime(){ return _cache_start; };
     double GetCacheEndTime(){ return _cache_end; };
-    std::vector<double> GetTimeList();
+    std::vector<double> GetTimeList(std::string lookfor="");
     std::vector<std::string> GetDeviceList();
     void setValidWindow(double);
     double getValidWindow();
