@@ -37,8 +37,8 @@ install-headers:
 	cp $(HDR) $(DESTDIR)/include
 
 install-cmake:
-	test -d $(DESTDIR)lib/ifbeam/cmake || mkdir -p $(DESTDIR)lib/ifbeam/cmake
-	cp Findifbeam.cmake $(DESTDIR)lib/ifbeam/cmake
+	test -d $(DESTDIR)/lib/ifbeam/cmake || mkdir -p $(DESTDIR)/lib/ifbeam/cmake
+	cp Findifbeam.cmake $(DESTDIR)/lib/ifbeam/cmake
 
 clean:
 	rm -f *.o *.a $(IFBLIB)
