@@ -26,7 +26,7 @@ VPATH=../../src
 
 all: $(BIN) $(TST) $(LIB) $(IFBLIB)
 
-install: install-lib install-headers install-cmake
+install: install-lib install-headers
 
 install-lib:
 	test -d $(DESTDIR)/lib || mkdir $(DESTDIR)/lib
@@ -35,10 +35,6 @@ install-lib:
 install-headers:
 	test -d $(DESTDIR)/include || mkdir -p $(DESTDIR)/include
 	cp $(HDR) $(DESTDIR)/include
-
-install-cmake:
-	test -d $(DESTDIR)/lib/ifbeam/cmake || mkdir -p $(DESTDIR)/lib/ifbeam/cmake
-	cp Findifbeam.cmake $(DESTDIR)/lib/ifbeam/cmake
 
 clean:
 	rm -f *.o *.a $(IFBLIB)
