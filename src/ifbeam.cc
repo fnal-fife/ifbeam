@@ -37,6 +37,24 @@ round_up_to_nearest(long n, int modulus) {
     }
 }
 
+class wda_init_cleanup_singleton {
+
+public:
+    static wda_init_cleanup_singleton *
+    get_wda_init_cleanup_singleton() {
+        static wda_init_cleanup_singleton actual_singleton;
+        return &actual_singleton;
+    }
+
+private:
+    wda_init_cleanup_singleton() {
+       wda_global_init();
+    }
+
+    ~wda_init_cleanup_singleton() {
+       wda_global_cleanup();
+    }
+};
 
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
     _time_width = time_width;
@@ -53,6 +71,9 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _cur_row_num = -1;
     _throw_on_empty = true;
     _values_column = -1;
+
+     // make sure we have initialized libwda...
+     (void*)wda_init_cleanup_singleton::get_wda_init_cleanup_singleton();
 
     // pass info about us down for UserAgent: string
     std::stringstream uabuf;
@@ -634,18 +655,37 @@ main() {
     double  nodatatime = 1373970148.000000;
     double  nodatatime2 = 1414910050.000000;
     double ehmgpr, em121ds0, em121ds5, trtgtd;
-    double t1, t2;
+    double t, t1, t2;
+    double t_found;
     BeamFolder::_debug = 1;
     std::string teststr("1321032116708,E:HMGPR,TORR,687.125");
 
     std::cout << std::setiosflags(std::ios::fixed);
+    
+    // test from Michael Wallbank
+    // http://ifb-data.fnal.gov:8099/ifbeam/data
+    //
+    double mc7an1;
+    BeamFolder wallbank("MC7_BeamScalars_Prespill","",500);
+    wallbank.set_epsilon(5);
+
+    // get a time k minutes earlier, so in a previous window
+    int k = 19;
+    t = 1639945556.860 - 60 * k;
+    for( int i = 0; i <= k; i++) {
+        wallbank.GetNamedData(t + i*60,"F:MC7AN1@", &mc7an1, &t_found);
+        std::cout << "got value " << mc7an1 <<  "for F:MC7AN1 at " << t_found << "\n";
+
+    }
+    // should end with:
+    // wallbank.GetNamedData(1639945496.860,"F:MC7AN1@", &mc7an1, &t_found);
+
  
     //  INC000001045621 specific data test
     //
     double ticket_t1 = 1553432986.232244730;
     double ticket_t2 = 1549114397.957554340;
     double g_ea9snc;
-    double t_found;
     BeamFolder ticket("A9_Monitoring");
     ticket.set_epsilon(0.51);
     try {
@@ -773,7 +813,6 @@ main() {
 
   
   std::string name;
-  double t;
   std::vector<double> vals;
   int count = 0;
 
