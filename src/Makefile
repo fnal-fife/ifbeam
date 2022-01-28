@@ -44,7 +44,7 @@ $(LIB): $(OBJ) $(UTLOBJ)
 	ar qv $(LIB)  $(OBJ) $(UTLOBJ)
 
 $(IFBLIB): $(OBJ) $(UTLOBJ)
-	${CXX} $(ARCH) --shared -o $(IFBLIB) $(OBJ) $(UTLOBJ) $(OTHER_LIBS) -lcurl 
+	${CXX} $(ARCH) --shared -Wl,-soname,$(IFBLIB) -o $(IFBLIB) $(OBJ) $(UTLOBJ) $(OTHER_LIBS) -lcurl 
 
 $(UTLOBJ):
 	cd ../util; make
