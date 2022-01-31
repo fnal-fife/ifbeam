@@ -55,7 +55,7 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _values_column = -1;
 
      // make sure we have initialized libwda...
-     (void*)wda_singleton::wda_init_cleanup_singleton::get_wda_init_cleanup_singleton();
+     (void)wda_singleton::wda_init_cleanup_singleton::get_wda_init_cleanup_singleton();
 
     // pass info about us down for UserAgent: string
     std::stringstream uabuf;
