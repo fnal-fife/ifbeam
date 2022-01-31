@@ -13,8 +13,8 @@ LIB=libifbeam.a
 IFBLIB=libifbeam.$(SHLIB)
 OTHER_LIBS=-L$(LIBWDA_LIB) -L$(IFDHC_LIB) -lifdh -lwda
 UTLSRC=../util/*.cc
-HDR=ifbeam.h
-OBJ=ifbeam.o $(UTL)
+HDR=ifbeam.h wda_singleton.h
+OBJ=ifbeam.o wda_singleton.o $(UTL)
 SRC=ifbeam.cc
 TST=ifbeam-test
 #DEFS=-DOLD_CACHE
@@ -51,7 +51,7 @@ $(UTLOBJ):
 
 %-test: %.cc
 	${CXX} -c -o $@.o $(ARCH) $(TESTDEFS) $(CXXFLAGS) $<
-	${CXX} -o $@ $@.o $(ARCH)  $(OTHER_LIBS) -lcurl 
+	${CXX} -o $@ $@.o $(ARCH)  $(OTHER_LIBS) wda_singleton.o -lcurl 
 
 %.o: %.cc
 	${CXX} -c -o $@  $(CXXFLAGS) $< 

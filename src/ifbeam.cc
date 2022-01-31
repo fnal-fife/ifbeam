@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <ifdh_version.h>
+#include <wda_singleton.h>
 
 namespace ifbeam_ns {
 
@@ -37,25 +38,6 @@ round_up_to_nearest(long n, int modulus) {
     }
 }
 
-class wda_init_cleanup_singleton {
-
-public:
-    static wda_init_cleanup_singleton *
-    get_wda_init_cleanup_singleton() {
-        static wda_init_cleanup_singleton actual_singleton;
-        return &actual_singleton;
-    }
-
-private:
-    wda_init_cleanup_singleton() {
-       wda_global_init();
-    }
-
-    ~wda_init_cleanup_singleton() {
-       wda_global_cleanup();
-    }
-};
-
 BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_width) {
     _time_width = time_width;
     _bundle_name =  bundle_name;
@@ -73,7 +55,7 @@ BeamFolder::BeamFolder(std::string bundle_name, std::string url, double time_wid
     _values_column = -1;
 
      // make sure we have initialized libwda...
-     (void*)wda_init_cleanup_singleton::get_wda_init_cleanup_singleton();
+     (void*)wda_singleton::wda_init_cleanup_singleton::get_wda_init_cleanup_singleton();
 
     // pass info about us down for UserAgent: string
     std::stringstream uabuf;
