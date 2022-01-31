@@ -24,7 +24,7 @@ CXXFLAGS=-pedantic-errors -Wall -Wextra -Werror -fPIC -g -O3 $(DEFS) $(ARCH) -I.
 DESTDIR=..
 VPATH=../../src
 
-all: $(BIN) $(TST) $(LIB) $(IFBLIB)
+all: $(BIN) $(LIB) $(IFBLIB) $(TST)
 
 install: install-lib install-headers
 
